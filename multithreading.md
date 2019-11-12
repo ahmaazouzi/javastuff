@@ -16,12 +16,14 @@
 ### Synchronization:
 - Multi-threading introduces asynchronicity. This is especially a thorny problem when, for example, two threads share some resource. It's bad for a thread to read a piece of data while another is writing it.
 - To enforce synchronicity to eliminate such problems, java uses the **monitor**. When a thread enters the monitor, all other threads are halted until this thread exits the monitor. This prevents more than one thread from manipulating shared data at the same time.
-- When an objects synchronized method is called, the object automatically enters the monitor (***How is synchronization done? WHO KNOWS!!?***).
+- When an objects synchronized method is called, the object automatically enters the monitor
+### [How is synchronization done? WHO KNOWS!!?](#synchronization).
 
 ### Messaging:
 - Communication between threads in other languages is controlled by the OS, but java defines its own inter-thread messaging mechanism which is done through calls to methods that all objects have. 
 
-## `Thread` and `Runnable`:
+### `Thread` and `Runnable`:
+- Managing threads can be done with either the `Thread` class or the `Runnable` interface. The `Thread` has the following methods which are used to manipulate the behavior of a thread:
 
 | Method | Meaning
 | --- | --- |
@@ -32,4 +34,14 @@
 | `run`| Entry point for a thread |
 | `sleep`| Suspend a thread for a period of time |
 | `start`| start a thread by calling its `run` method |
+
+## The Main Thread:
+- When a program starts executing the **main thread** starts immediately. This is a very important thread because child threads are spawned from it. It must also often be the last one to stop running to do several shutdown operations.
+- The main thread is started automatically. To get a reference to it, `currentThread()` must be called. It's a static method of `Thread`. E.g.:
+```java
+Thread thread = Thread.currentThread();
+```
+- 
+
+## Synchronization:
 
