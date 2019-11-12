@@ -17,7 +17,7 @@
 - Multi-threading introduces asynchronicity. This is especially a thorny problem when, for example, two threads share some resource. It's bad for a thread to read a piece of data while another is writing it.
 - To enforce synchronicity to eliminate such problems, java uses the **monitor**. When a thread enters the monitor, all other threads are halted until this thread exits the monitor. This prevents more than one thread from manipulating shared data at the same time.
 - When an objects synchronized method is called, the object automatically enters the monitor
-### [How is synchronization done? WHO KNOWS!!?](#synchronization).
+### [How is synchronization done? WHO KNOWS!!?](#how-synchronization-is-done).
 
 ### Messaging:
 - Communication between threads in other languages is controlled by the OS, but java defines its own inter-thread messaging mechanism which is done through calls to methods that all objects have. 
@@ -43,5 +43,5 @@ Thread thread = Thread.currentThread();
 ```
 - 
 
-## Synchronization:
+## How Synchronization is done:
 
