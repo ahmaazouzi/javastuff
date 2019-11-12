@@ -3,4 +3,6 @@
 - The basic premise of multi-threading is its magic ability to minimize idle time. I/O is much slower than the processing power of modern computers. Instead of halting altogether while waiting for slow I/O operations, a program can have some threads wait for the data while others process other tasks.
 
 ## Java Threads:
-- *Event-looping* with *polling* is the alternative to mult
+- *Event-looping* with *polling* is the alternative to multi-threading. A single thread of control runs in an infinite loop checking an event queue. When this thread is busy with a certain action, it blocks. The whole system has to wait to do anything. *(I know, terrible English).* In a multi-threaded environment the system doesn't have to wait for a single thread to *unblock.* Idle time is kept to  a minimum so the system doesn't have to wait for I/O operations.
+- Java threads can run in both a single-core and multi-core CPU's. Even though multiple threads don't run simultaneously, switching between threads eliminates most idle time. In multi-core systems, multiple threads run simultaneously in different cores in what is known as *parallel programming.* The **Fork/Join** framework in java automatically makes best use of multi-threading in a multi-core system.
+- A thread can be <span style="color:red">**running**</span>  or *ready to run*. A running thread can be *suspended* i.e. temporarily halted. A suspended thread can be *resumed* i.e. made to start where it was halted.
