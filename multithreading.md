@@ -35,13 +35,28 @@
 | `sleep`| Suspend a thread for a period of time |
 | `start`| start a thread by calling its `run` method |
 
-## The Main Thread:
+### The Main Thread:
 - When a program starts executing the **main thread** starts immediately. This is a very important thread because child threads are spawned from it. It must also often be the last one to stop running to do several shutdown operations.
 - The main thread is started automatically. To get a reference to it, `currentThread()` must be called. It's a static method of `Thread`. E.g.:
 ```java
 Thread thread = Thread.currentThread();
 ```
-- 
+
+## Creating a Thread:
+- A thread can be created either by implementing the **`Runnable`** interface or extending the **`Thread`** class.
+
+### Runnable:
+- The easiest way to create a new thread is through implementing the `Runnable` interface. 
+- implementing `Runnable` requires the implementation of the `run()` method. The code to construct a new thread is done inside the `run()` method. It is the entry point to the new thread. 
+-  Inside the class implementing `Runnable` an object of type Thread is constructed in the following way:
+```java
+Thread(Runnable PlasticGorilla, String name);
+```
+- In this example, `PlasticGorilla` is an instance of the class that implements `Runnable`, while name is the name you give to this thread.
+- This thread doesn't start until you call the method `start()` which calls `run()`
+
+### Thread:
+### Runnable or Thread:
 
 ## How Synchronization is done:
 
