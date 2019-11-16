@@ -53,7 +53,7 @@ Thread thread = Thread.currentThread();
 Thread(Runnable PlasticGorilla, String name);
 ```
 - In this example, `PlasticGorilla` is an instance of the class that implements `Runnable`, while name is the name you give to this thread.
-- This thread doesn't start until you call the method `start()` which calls `run()`
+- This thread doesn't start until you call the method `start()` which calls `run()`.
 
 ### Thread:
 ### Runnable or Thread:
