@@ -119,9 +119,32 @@ Child thread exiting
 
 ### Runnable or Thread:
 - The class `Thread` includes several methods that can be overridden by your class. If you don't feel the need to override such methods you can simply use `Runnable` instead. 
-- Choosing `Runnable` has the adventage of allowing a class to not be tied to the `Thread` class. implementing `Runnable` allows you to effectively inherit from another class or implement multiple interfaces.
+- Choosing `Runnable` has the advantage of allowing a class to not be tied to the `Thread` class. implementing `Runnable` allows you to effectively inherit from another class or implement multiple interfaces.
 
 ## Creating multiple Threads
+- Multiple child threads that execute the same actions can be spawned dynamically with just a little change to the constructor of the newly created class as in:
+```java
+...
+class ChildThread extends Thread{
+	
+	Thread thread;
+	String name;
+	
+	public ChildThread(String threadName) {
+		name = threadName;
+		thread = new Thread(this, name);
+		thread.start();
+	};
+...
+```
+- This constructor allows the creation of different threads that bear different name, though they do the same actions. This can be seen by how these threads are instantiated as in:
+```java
+new ChildThread("firstChild");
+new ChildThread("secondChild");
+new ChildThread("thirdChild");
+```
+
+## `isAlive()` and `join()`:
 
 ## How Synchronization is done:
 
