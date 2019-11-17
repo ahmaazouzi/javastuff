@@ -54,9 +54,74 @@ Thread(Runnable PlasticGorilla, String name);
 ```
 - In this example, `PlasticGorilla` is an instance of the class that implements `Runnable`, while name is the name you give to this thread.
 - This thread doesn't start until you call the method `start()` which calls `run()`.
+- A good example illustrating how different threads execute is based on loops on multiple threads where loops are delayed a certain amount of time as in:
+```java
+public class PlasticGorilla{
+	public static void main(String[] args) {
+		new ChildThread();
+		
+		try {
+			for (int j = 0; j < 5; j++) {
+				System.out.println("Plastic gorilla thread: " + j);
+				Thread.sleep(1000);
+			}
+			
+		} catch (InterruptedException e) {
+			System.out.println("Plastic gorilla interrupted");
+		}
+		System.out.println("Plastic gorilla thread exiting");
+	}
+}
+
+class ChildThread implements Runnable{
+	
+	Thread thread;
+	
+	public ChildThread() {
+		thread = new Thread(this, "Child Thread");
+		thread.start();
+	};
+
+	@Override
+	public void run() {
+		try {
+			for (int i = 0; i < 5; i++) {
+				System.out.println("Child thread: " + i);
+				Thread.sleep(500);
+			}
+		} catch (InterruptedException e) {
+			System.out.println("Child thread interrupted");
+		}
+		System.out.println("Child thread exiting");
+		
+	}
+	
+}
+```
+- This program prints the following output:
+```
+Plastic gorilla thread: 0
+Child thread: 0
+Child thread: 1
+Plastic gorilla thread: 1
+Child thread: 2
+Child thread: 3
+Plastic gorilla thread: 2
+Child thread: 4
+Child thread exiting
+Plastic gorilla thread: 3
+Plastic gorilla thread: 4
+Child thread exiting
+```
 
 ### Thread:
+- Extending the `Thread` class is almost identical to implementing the the Runnable interface except that the class `Thread` is extended instead of the `Runnable` interface getting implemented. 
+
 ### Runnable or Thread:
+- The class `Thread` includes several methods that can be overridden by your class. If you don't feel the need to override such methods you can simply use `Runnable` instead. 
+- Choosing `Runnable` has the adventage of allowing a class to not be tied to the `Thread` class. implementing `Runnable` allows you to effectively inherit from another class or implement multiple interfaces.
+
+## Creating multiple Threads
 
 ## How Synchronization is done:
 
