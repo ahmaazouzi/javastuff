@@ -145,6 +145,20 @@ new ChildThread("thirdChild");
 ```
 
 ## `isAlive()` and `join()`:
+- a call to the method `isAlive()` returns a boolean informing you if a thread is still running.
+- The method `join()` allows you to make a thread wait until another finishes executing. For example, the main thread should not exit until all its child threads exit. Instead of waiting for a specified time period, `join` automatically keep the main thread waiting for the child threads to finish first before it exits itself.
 
-## How Synchronization is done:
+## Thread Priorities:
+- `setPriority()` allows you define the priority of a thread. Higher priority threads get more and priority access to the CPU. When multiple threads have the same priority, there can be problems so it's safer to use threads that willingly yield control so other threads can also run.
+- Threads that yield control willingly are safer and more portable than preemptive threads. 
+
+## How Synchronization is Done:
+- **Synchronization** allows you to ensure such restrictions as allowing only one thread at a time to access a shared resource.
+- Java uses the **monitor** as a lock that can only be owned by a single thread at a time. No other thread can *enter* the monitor while it's *owned* by another one. They must *wait*. A thread that owns the monitor can *reenter* it.
+
+- There are two ways code can be synchronized:
+
+### 1. Synchronized Methods:
+### 2. Synchronized Statements:
+
 
