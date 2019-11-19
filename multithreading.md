@@ -155,10 +155,81 @@ new ChildThread("thirdChild");
 ## How Synchronization is Done:
 - **Synchronization** allows you to ensure such restrictions as allowing only one thread at a time to access a shared resource.
 - Java uses the **monitor** as a lock that can only be owned by a single thread at a time. No other thread can *enter* the monitor while it's *owned* by another one. They must *wait*. A thread that owns the monitor can *reenter* it.
-
 - There are two ways code can be synchronized:
+	**1. Synchronized Methods:**
+- A method is called with the modifier `synchronized`. That automatically makes it synchronized (no way?!!).
+- When a thread is inside a synchronized method it *enters the object's monitor, so any other thread that tries to call it has to wait* (This is a little voodooish).
+- The following example shows how the `synchronized` keyword keeps each pair of numbers together, while not using results in a jumbled mess.
 
-### 1. Synchronized Methods:
-### 2. Synchronized Statements:
+```java
+class Num {
+	synchronized void call(int nums[]) {
+		System.out.print("[" + nums[0]);
+		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(nums[1] + "]");
+	}
+}
+
+class Nummer implements Runnable{
+	Num target;
+	int[] msg;
+	Thread thread;
+	
+	public Nummer(Num targ, int[] s) {
+		target = targ;;
+		msg = s;
+		thread = new Thread(this);
+		thread.start();
+	}
+
+	@Override
+	public void run() {
+		target.call(msg);
+	}
+}
+
+public class Synch {
+	public static void main(String[] args) {
+		Num target = new Num();
+		
+		Nummer ob1 = new Nummer(target,new int[] {1,2}) ;
+		Nummer ob2 = new Nummer(target,new int[] {3,4});
+		Nummer ob3 = new Nummer(target,new int[] {5,6});
+		Nummer ob4 = new Nummer(target,new int[] {7,8});
+		
+		try {
+			ob1.thread.join();
+			ob2.thread.join();
+			ob3.thread.join();
+			ob4.thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+```
+- unsynchronized output:
+[12]
+[78]
+[56]
+[34]
+
+- synchronized output
+[1[7[5[38]
+4]
+6]
+2]
+```
+- When `sleep()` is called, another thread jumps in to execute the method `call()`. The lack of synchronization results in a ***race condition***. All 3 threads can access the same method on the same object at the same time. Race conditions are a hard problem because they are unpredictable and give right results in some cases and wrong results in others. They can also be hard to debug.
+	**2. Synchronized Statements:** 
+- 
+
 
 
