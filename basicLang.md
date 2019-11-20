@@ -59,7 +59,8 @@
 
 ### String Literals:
 - String literals are enclosed inside double quotes.
-- They can also use hexadecimal and octal representations as in [characters](#entered-directly-as-octals).
+- They can also use hexadecimal and octal representations as in [characters](entered-directly-as-octals).
+- Sadly, as of java 8, strings must start and end on the same line. There is no line-continuation escape sequence as in Python, for example. 
 
 ## Variables:
 
