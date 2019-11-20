@@ -51,7 +51,7 @@
 
 ### Character Literals:
 - Characters are 16 bit values that can be converted to integers and manipulated with integer operators. 
-- Characters, unlike strings, are wrapped in single quotes as in `a`, `b`, `3`.
+- Characters, unlike strings, are wrapped in single quotes as in `'a'`, `'b'`, `'3'`.
 - For impossible to enter characters use a backslash as in `'\''` and new line `'\n'`.
 - Characters can also be entered directly as octals or hexadecimals as in:
 	- **Octal**: inside single quotes a backslash followed by 3 digits as in `'\107'` which is the same as `'G'`.
@@ -63,10 +63,80 @@
 - Sadly, as of java 8, strings must start and end on the same line. There is no line-continuation escape sequence as in Python, for example. 
 
 ## Variables:
+- A variable is defined by an identifier, a type and an optional initializer.
+
+### Variable Declaration:
+- A java variable follows this general form:
+```
+type identifier = [ = value][, identifier[=value] ...];
+```
+- Type can be one of the primitive types seen so far. It can also be the name of a class or an interface. 
+- Most importantly, the type must match the value. `int what = "What!"` is just WRONG!!
+
+### Dynamic Initialization:
+- Initializing a variable can be done with either a constant or dynamically. A variable can be initialized to the result of a calculation, an expression, a method.. etc.
+
+### Scope and Lifetime of a Variable:
+- In addition to grouping multiple statements into a single logical unit, **blocks in java also have scope**. javascript blocks, for example, has no scope.
+- The following example illustrates some aspects of how block scoping works:
+```java 
+public class Blockade {
+	public static void main(String[] args) {
+		int a = 1, b, c = 2;
+		
+		System.out.println("c was: " + c);
+		
+		// a block 
+		{
+			System.out.println(a); // Variables defined outside the block are visible inside it.
+			b = 4; // A variable defined outside can be initialized inside the block.
+			c = 15; // The value of an outer variable can be changed inside the block.
+			int d = 5;
+			System.out.println(d); // d is visible inside the block but not outside of it.
+		}
+
+		System.out.println("c has changed to: " + c); // value changed inside the block.
+		System.out.println(b); // b was initialized inside the scope.
+		// This is wrong. d is not available in this scope
+		// System.out.println(d);
+		// Wrong. 3 hasn't been initialized
+		// System.out.println(e);
+	}
+}
+```
+- Scope defines the visibility of objects to other parts of a program. It also determines the lifetime of an object. 
+- Java has a class and a method scope. This section is about method scope only. The scope of a methods with its opening curly brace and ends with the closing one. Parameters are also part of the method's scope.
+- Variables defined inside a scope are not visible outside it. It's localized/protected against unauthorized use by the outside the world. This is the basis of encapsulation. Scopes can be nested and while inner scopes can see variables in outer scopes, the reverse is not true.
+- A variable is only valid after it's declared. A variable declared at the end of a block or a method is useless.
+- A variable is created when its scope is entered and is destroyed when execution leaves that scope. the lifetime of a variable is circumscribed by its scope.
+- If a variable is initialized inside a block, it's reinitialized every time the block is entered (think of a loop block).
+- Obviously, you can't declare a variable inside an inner scope when a variable with the same name is in the outer scope.
 
 ## Type Conversion and Casting:
+- Java performs automatic type conversion between compatible types. Between incompatible types, the user can explicitly perform this conversion through **casting**.
+
+### Automatic Conversion:
+- Automatic conversion happens when:
+	1. The two types are compatible.
+	2. The destination type is larger than the source type.
+-  If these two conditions are met, a widening conversion occurs. an int is automatically converted into a long. 
+- Automatic conversions occur between numeric types, but no automatic conversions from numeric types to chars or booleans take place. No automatic conversions occur between chars and booleans either. 
 
 ## Automatic Type promotion:
+- Casting is used to perform narrowing conversions. With casting you can convert a larger type into a smaller type as in
+```
+int a = 500;
+byte d;
+d = (byte) a;
+```
+- When you convert a floating point type into an integer type, the value gets truncated, meaning the fractional part is lost. 
+- If the value is too big for the destination type, the value is reduced modulo the destination type's range as in:
+```
+int a = 257;
+byte = (byte) a;
+// byte now is 1
+```
+- You can even cast a literal, although I have no idea what the value would be.
 
 ## Arrays:
 
