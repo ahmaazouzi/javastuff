@@ -194,7 +194,7 @@ class Nummer implements Runnable{
 	}
 }
 
-public class Synch {
+public class Synchro {
 	public static void main(String[] args) {
 		Num target = new Num();
 		
@@ -215,7 +215,7 @@ public class Synch {
 }
 ```
 ```
-- unsynchronized output:
+- unsynchronized output (I have no idea why they aren't in order):
 [12]
 [78]
 [56]
@@ -228,8 +228,98 @@ public class Synch {
 2]
 ```
 - When `sleep()` is called, another thread jumps in to execute the method `call()`. The lack of synchronization results in a ***race condition***. All 3 threads can access the same method on the same object at the same time. Race conditions are a hard problem because they are unpredictable and give right results in some cases and wrong results in others. They can also be hard to debug.
+- By preceding a method's definition by `synchronized`, you *serialize* access to it i.e. only one thread can access it at a time.
+- **IMPORTANT:** once a thread enters a synchronized method on an instance, no other thread can enter any synchronized method on that instance. Non-synchronized methods on that same object can still be callable by other threads.
 	**2. Synchronized Statements:** 
-- 
+- When you have predefined classes with non-synchronized methods, you can synchronize them by putting calls to their methods in synchronized blocks.
+- The following example similar to the one above shows the syntax of block synchronization:
+```java
+package exerc;
+class Num {
+	void call(int nums[]) {
+		System.out.print("[" + nums[0]);
+		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(nums[1] + "]");
+	}
+}
 
+class Nummer implements Runnable{
+	Num target;
+	int[] msg;
+	Thread thread;
+	
+	public Nummer(Num targ, int[] s) {
+		target = targ;;
+		msg = s;
+		thread = new Thread(this);
+		thread.start();
+	}
 
+	@Override
+	public void run() {
+		// This is where synchronization is done!
+		synchronized (target) {
+			target.call(msg);
+		}
+		
+	}
+}
 
+public class Synchro {
+	public static void main(String[] args) {
+		Num target = new Num();
+		
+		Nummer ob1 = new Nummer(target,new int[] {1,2}) ;
+		Nummer ob2 = new Nummer(target,new int[] {3,4});
+		Nummer ob3 = new Nummer(target,new int[] {5,6});
+		Nummer ob4 = new Nummer(target,new int[] {7,8});
+		
+		try {
+			ob1.thread.join();
+			ob2.thread.join();
+			ob3.thread.join();
+			ob4.thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+
+## Interthread Communication:
+- The use of the `synchronized` keyword allows you to stop all other threads from accessing synchronized methods of an object, but you can have more granular control through interthread communication which is done through the following methods:
+	- **`wait()`**: Tells the thread to sleep until another thread enters the same monitor and calls `notify()` or `notifyAll()`. This method also allows a specified waiting time period.
+	- **`notify()`**: wakes up a thread that called `wait()` on the same object.
+	- **`notifyAll()`**: wakes up all the threads that called `wait()` on the same object.
+- Java oh Java. Rarely a thread can wake up for no freaking reason (though no call was made to `notify()` or `notifyAll()`. It's recommended that calls to `wait()` should be put "inside a loop that check the condition on which the thread is waiting." The book illustrate the benefits of interthread communication nicely in the  (in)famous producer/consumer problem which I will not copy here.
+- *The example provided in the book makes the queue's put and get methods wait each until their action is finished before they hand control to the other. This is done inside a loop inside each method and assisted by booleans that switch based on which method owns the monitor* (bad English).
+
+### Deadlock:
+- A **deadlocks** occurs when two threads have a circular dependency on two synchronized objects.
+If thread **a** enters object **A** and thread **b** enters object **B**. If **a** tries to call a synchronized method in object **B** it blocks because it can't have it until **b** releases it. If **b** also tries to called a synchronized method in **A** it will wait forever. Like race conditions, it occurs rarely only when all conditions are met and it might involve much more than two threads.
+- If a multithreaded program hangs, a deadlock should be one of the first possible causes to consider.
+
+## Suspending, Stopping and Resuming Threads:
+- The methods `suspend()`, `stop()`, `resume()` are deprecated and they can cause serious problems. For example, when a thread is suspended with the method `suspend()` it doesn't relinquish locks to resources it owns. Other threads waiting for those resources will be deadlocked. `stop()` might stop a thread in the middle of writing data and locks are released so the corrupted data gets used by other threads. 
+- Instead of using these deprecated methods, the `run()` method itself should be used to suspend, restart and stop threads. This is a done through a combination of suspend, resume and stop flags and the `wait()` and `notify()` methods.
+
+## Accessing A Thread's State:
+- `getState()` allows you to get a thread's state which if of type **`Thread.State`**. **State** is an enumeration with the following values:
+	- **BLOCKED:** suspended because waiting to get a lock.
+	- **NEW:** hasn't begun execution et.
+	- **RUNNABLE:** is running or will run as soon as it has access to CPU.
+	- **TERMINATED:** Completed execution.
+	- **TIMED_WAITING:** suspended for a specified time as in `sleep()` or timed `join()` and `wait()`.
+	- **WAITING:** suspended because it's waiting for something to happen. Happens after calls to `join()` and `wait()`.
+- A thread might change state immediately after calling `getState()`, that's why this method is used mainly for debugging and profiling purposes.
+
+## Conclusion:
+- To make best use of multithreading think concurrently rather than serially.
+- Too many threads can be bad as more resources will be spent on context-switching.
+- The **Fork/Join framework** is best and easiest way to make great use of multi-core systems capabilities.
