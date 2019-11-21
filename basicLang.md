@@ -204,6 +204,7 @@ b = -a; // b is equal to 4
 
 ## Bitwise:
 - I don't remember a single time having to use these apart from language books and exercises and job interview preparation material.
+
 | Character | Description
 | --- | --- |
 | `~` | bitwise unary NOT
@@ -219,6 +220,7 @@ b = -a; // b is equal to 4
 | `>>=` | ... shift right assignment
 | `>>>=` | ... shift right zero fill assignment
 | `<<=` | ... shift left assignment
+
 - Bitwise operators work on
 
 
