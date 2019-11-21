@@ -122,7 +122,7 @@ public class Blockade {
 -  If these two conditions are met, a widening conversion occurs. an int is automatically converted into a long. 
 - Automatic conversions occur between numeric types, but no automatic conversions from numeric types to chars or booleans take place. No automatic conversions occur between chars and booleans either. 
 
-## Automatic Type promotion:
+### Casting:
 - Casting is used to perform narrowing conversions. With casting you can convert a larger type into a smaller type as in
 ```
 int a = 500;
@@ -138,6 +138,92 @@ byte = (byte) a;
 ```
 - You can even cast a literal, although I have no idea what the value would be.
 
+## Automatic Type Promotion:
+- In expressions, sometimes the intermediate value of an operation is bigger than the range of either operand. To fix this, java automatically promotes **char**, **byte** and **short** into **int** during the evaluation of an expression. 
+- This automatic promotion can cause really weird problems as in: 
+```
+byte b = 3;
+b = b + 2;
+// This causes a compile time error.
+```
+- Java asks you to cast the value back into a byte. Be careful about overflow consequences!
+
+### Type Promotion Rules:
+- Type promotion follows these rules:
+	* All **byte**, **char** and **short** are converted into **int**.
+	* If one of the the two operands is **long**, the whole expression is promoted to **long**.
+	* If one of the two operands is a **float**, he whole expression is promoted to **float**.
+	* If any operand is **double**, the whole expression becomes a **long**
+
 ## Arrays:
+- Declaring an array can be done be done with either one of the two following ways:
+```
+int month_days[];
+int[] month_days;
+```
+- `int month_days[] = new int[12]` declares and creates a new array. Numeric elements in such an array are initialized to zeros, booleans to false, and reference types to nulls.
+- The keyword `new` allocates memory for the given array.
+- You can also use an array literal or what they call an array initializer as in :
+```java
+int days[] = {1, 2, 3, 4, 5, 5};
+```
+- Java's runtime checks if you're trying to access an element outside the range of the array.
+
+### Trivia About Arrays:
+- Passing a literal array as a method's argument can be done this way (weird!!!:
+```java
+void methoda(new int[] {1 ,2 ,3 ,4}) {
+	...
+}
+
+```
+- The alternative array declaration syntax can be useful in some cases, especially when declaring multiple arrays on the same line as in:
+```java
+int[] nums1, nums2, nums3, nums4; // This is cooler.
+int nums1[], nums2[], nums3[], nums4[];
+```
 
 ## Strings:
+- Strings are neither primitives nor mere arrays of characters. They are objects and understanding how they work requires understanding objects and classes.
+- Strings have a lot of characteristics making them very powerful and easy to use.
+
+# Operators:
+ - All operators are described here except for: **instanceOf** and the arrow operator `->`.
+
+## Arithmetic:'
+- Two slightly unfamiliar operators are:
+	- **`%=`** modulus assignment (this one is especially weird).
+	- **`*=`**: multiplication assignment.
+- The unary minus can be used with a variable name. I didn't know that:
+```java
+int a = -4;
+b = -a; // b is equal to 4
+```
+- Dividing integers yields no fraction, resulting in a rounding down.
+- **Increment/Decrement:***  *prefix* and *postfix* incrementation/ decrementation have a subtle difference for which I have no use case yet. `a = ++b` is equal to `a += 1; a = b`, while `a = b++` is equal to `b = a; b += 1`.
+
+## Bitwise:
+- I don't remember a single time having to use these apart from language books and exercises and job interview preparation material.
+| Character | Description
+| --- | --- |
+| `~` | bitwise unary NOT
+| `&` | ... AND
+| `|` | ... OR
+| `^` | ... Exclusive OR
+| `>>` | ... shift right
+| `>>>` | ... shift right zero fill
+| `<<` | ... shift left
+| `&=` | ... AND assignment
+| `|=` | ... OR assignment
+| `^=` | ... Exclusive OR assignment
+| `>>=` | ... shift right assignment
+| `>>>=` | ... shift right zero fill assignment
+| `<<=` | ... shift left assignment
+- Bitwise operators work on
+
+
+
+
+
+
+
