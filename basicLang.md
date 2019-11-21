@@ -209,13 +209,13 @@ b = -a; // b is equal to 4
 | --- | --- |
 | `~` | bitwise unary NOT
 | `&` | ... AND
-| `|` | ... OR
+| `\|` | ... OR
 | `^` | ... Exclusive OR
 | `>>` | ... shift right
 | `>>>` | ... shift right zero fill
 | `<<` | ... shift left
 | `&=` | ... AND assignment
-| `|=` | ... OR assignment
+| `\|=` | ... OR assignment
 | `^=` | ... Exclusive OR assignment
 | `>>=` | ... shift right assignment
 | `>>>=` | ... shift right zero fill assignment
