@@ -221,7 +221,43 @@ b = -a; // b is equal to 4
 | `>>>=` | ... shift right zero fill assignment
 | `<<=` | ... shift left assignment
 
-- Bitwise operators work on
+- Bitwise operators work on integral types: **byte**, **char**, **short**, **int** and **long**.
+- Making effective use of bitwise operators depends on a good understanding of how java represents negative values. All integer types are signed except for **char**. It is based on ***two's complement*** encoding. To get the negative of a number invert all its bits and add 1 to it. Two's complement eliminates negative zero which is an invalid integer. 
+- The most important fact to remember is that the leftmost bit defines the sign of a number. **1** is for negative and **0** for positive. 
+- The beauty of math is in the fact that a few rules appear everywhere. The behavior of bitwise NOT, OR, XOR.. etc. is very similar to to boolean operators if not identical so  there is point in repeating all that here.  basically the unary NOT operator inverts a bit; the OR operator results in 1 if one or two operands are 1 ... etc.
+
+### Left Shift
+- Shifts bits to the left a specified number of times as in:
+```java
+value << shift_times
+```
+- High order bits are lost and zeros fill the right.
+- Because java always performs automatic promotions with in expressions, results of left shifting on values of these types must be recast back to the original types.
+- Left shifting is an efficient way of doubling a number, but it should be done with care as shifting into the high-order bit DOES makes the value negative.
+
+### Right Shift:
+- Same as left shifting but in the opposite direction. In a process called *sign extension*, the leftmost position are filled with the high-order bit, so if the value is negative the left is filled with ones and if positive it's filled with zeros.
+
+### Unsigned Shift Left:
+- This is used when there is no need for preserving the sign. It's frequently used in graphics and pixel manipulation and can be done with the unsigned left shift sign `>>>`. I think this largely useless and I might never have to used.
+
+## Relational Operators:
+- They determine relations between operands like equality and ordering. The outcome is a boolean and they are used mainly to control **if** statements.
+- `if (!done)` is not equivalent to `if (done == 0)`. It's meaningless.
+
+## Boolean Logical Operators:
+- Interesting among these is so-called **short-circuit** logical operators. It is customary to use the short circuit **`&&`** and **`||`** and leaving the other **`&`** and **`|`**  to be used only in bitwise operations.
+
+## The ternary ?: operator:
+- It is used to assign a value to a variable based on a condition:
+```
+char a = 5 > 2 ? 'y': 's';
+```
+
+## Precedence and Parentheses:
+- Operators have different levels of precedence. Google you a precedence table!! 
+- To avoid precedence issues and to explicitly set it and control it, use parentheses. parentheses, including redundant ones also help clarify the meanings of complicated long expressions.
+- Parentheses don't cause any performance issues, so USE them!
 
 
 
