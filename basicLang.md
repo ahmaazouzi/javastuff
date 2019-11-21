@@ -25,7 +25,8 @@
 
 ## Booleans:
 - They are a type of their own. 
-- `if (a == true) ..` is the same as `if (true) ..`.
+- `if (a == true) ...` is the same as `if (true) ...` and also the same as `if (a) ...`.
+`if (!a) ... ` is the same as `if (a == false)`
 - The output of a relational operator such as `a > b` is a boolean.
 - While an expression like `(5 > 2) + 3` equals 4 in languages like javascript and probably C as well, it doesn't add up in Java.
 
@@ -259,9 +260,153 @@ char a = 5 > 2 ? 'y': 's';
 - To avoid precedence issues and to explicitly set it and control it, use parentheses. parentheses, including redundant ones also help clarify the meanings of complicated long expressions.
 - Parentheses don't cause any performance issues, so USE them!
 
+# Control Statements:
+## Selection Statements:
+- Selection statements allow a program to take different paths based on the outcome of an expression or the value of a variable. These conditions are only known at run time.
+- The **switch** statement follows the usual format:
+```java
+public class Year_Months{ 
+	public static void main(String[] args) {
+		int month = 4;
+		switch(month) {
+		case 1:
+			System.out.println("January");
+			break;
+		case 2:
+			System.out.println("February");
+			break;
+		case 3:
+			System.out.println("March");
+			break;
+		case 4:
+			System.out.println("April");
+			break;
+		case 5:
+			System.out.println("May");
+			break;
+		case 6:
+			System.out.println("June");
+			break;
+		case 7:
+			System.out.println("July");
+			break;
+		case 8:
+			System.out.println("August");
+			break;
+		case 9:
+			System.out.println("September");
+			break;
+		case 10:
+			System.out.println("October");
+			break;
+		case 11:
+			System.out.println("November");
+			break;
+		case 12:
+			System.out.println("December");
+			break;
+		default:
+			System.out.println("Come on, dude!!!");
+		}
+	}
+}
+``` 
+- Cases can only be constants or a literal.
+- switch statements can also be nested.
+- The main point of using a switch statements over an if-else statement is the clarity and streamlining it might offer.
+- key differences between **switch** and **if-else** include:
+	* **if** can test for any type of booleans, while a switch only check for equality between the value of the expression and one of its case constants.
+	* No two cases can have the same value.
+	* **switch** statements are more efficient than **if-else** statements.
 
+## Iteration Statements:
+- **While** loop's body will never execute if the condition is false.
+- While loop body can be an empty as in this example used to find the midpoint between two integers:
+```java
+int i = 10, j = 30;
+while (++i < --j) ;
+// both i and j equal 20 now.
+```
+- The **do-while** is similar to while except that the body executes at least once, even if the initial condition is false:
+```java
+public class Something{ 
+	public static void main(String[] args) {
+		int i = 4;
+		do {
+			if (i < 0)
+				System.out.println("Sorry, you run out of tries");
+			else 
+				System.out.println("You have " + i + " more tries!");
+		} while (--i > 0);
+	}
+}
+```
+- The book claims do-while is useful for "menu selection", whatever that means. Let's just say do-while is used when some action must be performed at least once.
 
+### For Loops:
+- In a **for** loop, a comma can be used to separate variables inside inside the **for** loop as in following snippet which get the midpoint between two integers:
+```java
+int a, b;
+for (a = 10, b = 30; ++a, --b;){
+	... 
+}
+```
+- Iteration and initialization can be absent , the termination conditional can be any boolean even one created outside of the for loop as in:
+ ```java
+public class Something{ 
+	public static void main(String[] args) {
+		 boolean term = false;
+		 int a = 0;
+		 for (;!term;){
+		 	a++;
+		 	if (a == 50){
+		 		System.out.println("We got 50 already!");
+		 		term = true;
+		 	} 
+		 }
+	}
+}
+ ```
+- `for ( ; ; )` creates a forever loop.
 
+### Enhanced For Loops:
+- The **enhanced for loop** or **foreach** is amazing. It has a clean syntax and helps avoid boundary issues. It is used to iterate over collections such as arrays and lists.. etc. It follows this syntax:
+```java
+char[] someConsonants = {'b', 'c', 'd', 'v', 'z'};
+for (char c: someConsonants){
+	break;
+	System.out.println(c);	
+}
+```
+- You can terminate an enhanced for-loop early using break;
+- Enhanced for loops are read-only. They can't change the values of elements they iterate over. That, can be done by the traditional for loop, though. 
 
+## Jump Statements:
+### break:
+- `break` can be used to terminate a statement sequence in a switch statement, terminate a loop early and as a gentle for of **goto**.
+- It can terminate any type of loop including infinite loops.
+- Inside a nested loop, `break` only jumps out of the inner loop where it resides. It has no effect on the outer loops. Basically its effect is seen only within the scope where it is defined. 
+- Multiple `break` statements can appear in the same loop, but avoid using too many in one loop. They tend to destructure your code.
+- I don't care about gotos at the moment.
+
+###  continue:
+- Another form of goto. It is used to bypass the loop body based on some condition as in:
+```java
+public class Something{ 
+	public static void main(String[] args) {
+		char[] someConsonants = {'b', 'c', 'd', 'v', 'z'};
+		for (char c: someConsonants){
+			if (c == 'b' || c == 'z') {
+				continue;
+			}
+			System.out.println(c); // This statement is passed by if continue is executed.
+		}
+	}
+}
+```
+- It can also be used with a label which I don't think is very useful at the moment.
+
+### return:
+- Return is also a jumping statement. It causes the method stop immediately and hands execution back to the method's caller. 
 
 
