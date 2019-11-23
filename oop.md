@@ -48,6 +48,37 @@ Something obj2 = obj1;
 - The `finalize()` method allows an object to release locks on resources such as files before this object is destroyed. You define a `finalize()` method inside your class and tell it what to do and whenever the garbage collector is about destroy an object it runs `finalize()`.
 
 # More on Classes and Methods:
+## Method Overloading:
+- **Method overloading** refers the fact that two methods with the same name and different parameter declarations can be defined in the same class. It's an aspect of polymorphism, namely, multiple names are reduced to one.
+- Javascript and Python don't overload!
+- When an overloaded method is invoked, the type and/or the number of its parameters are used to determine which method to call. The two methods must differ in type and or number of parameters. **BE CAREFUL (DIFFERENT RETURN TYPES ARE NOT ENOUGH TO TELL OVERLOADED METHODS APART. ONLY THE TYPE AND NUMBER OF PARAMS MATTER)**
+- Java's **automatic type conversion** can interfere and elevate something like an int into a double. This can be problematic and some might consider it a blessing.
+- Method overloading is extremely useful and makes java more streamlined and easier to use. C for example uses 3 functions to obtain absolute value, one for floats, another for integers and yet another one for long integers.. etc. Java's overloading capabilities allows for creating one absolute value method for all types of numbers.
+- Stylistically speaking, avoid overloading unrelated methods. Just because you can make use one name for all your class methods, don't do it. It's stupid and confusing.
+
+## Objects as Parameters:
+-
+
+## Argument Passing, an in-Depth Look:
+-
+## Recursion:
+-
+## Access Control:
+-
+## Static:
+-
+## Final:
+-
+## Arrays Revisited:
+-
+## The `String` Class:
+-
+## Command-Line Arguments:
+-
+## Varargs:
+-
+
+
 # Inheritance:
 # Packages and Interfaces:
 # Generics:
