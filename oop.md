@@ -68,14 +68,45 @@ Something obj2 = obj1;
 - Basically, when you pass a primitive type argument to a method's parameter, you pass it by value. You just pass a copy of it. Any changes you make to the variable inside the method only affects the copy, leaving the original unaffected. 
 - When you pass an object type, the variable you pass is a reference to the object itself; you pass by reference. Changes you make to the variable affect the object directly.
 
-## Recursion:
--
 ## Access Control:
--
+- In addition to linking data with the code that manipulates it, *encapsulation* does also provide **access control**. Access control refers to the ability to control access a class members by other parts of the program. Through a correct implementation of access control, a class becomes a *black box. * It can be used and interacted with, but its internal workings are not visible to the outside world.
+- an access modifier is added to a class member's declaration. The three access modifiers are:
+	1. **private:** can only be accessed within the class by other class members.
+	2. **public:** can be accessed by any the whole world. `main()`, for example, is open to be accessed outside the program, i.e. the java runtime system.
+	3. **protected:** has to do with inheritance which is discussed later [here](#inheritance).
+	4. No modifier: when no modifier is specified, the default is for access to be public within the package where the class resides.
+- Data should be private while some methods are public and others private.
+
 ## Static:
--
+- static members have to do with the class and have no relation to its instances. These methods and variables can be accessed and called before the class where they reside is instantiated. They don't require the instantiation of the class.
+- A static variable is global for all the instances of the class. If one instance changes it, it is changed for every instance.
+- Static methods:
+	1. Can only **directly call other static methods**.
+	2. Can only **directly access static data**.
+	3. Cannot refer to **this** or **super** directly or indirectly. 
+- A **static block** can be defined inside a class that gets executed when the class is first used. I can't think of a use case for this at the moment but it sounds useful :).
+```java
+public class Something{
+	public static void main(String[] args) {
+		Dada dada = new Dada();
+	}
+}
+
+class Dada{
+	static fafa (){
+		System.out.println("zzzzz");
+	}
+}
+```
+- 
+
 ## Final:
--
+- `final` fields are constants. a final should be initialized when it's declared or within a constructor.
+- It is conventional for constants to be in all-caps.
+- Constants are a midpoint between variables and mere literals. Instead of spreading literals (magic values) that might need to be changed in the future and you might forget to change some of them, a constant give them a meaningful name. Changing them is done once with the constant. Finals are extremely useful.
+- local (method) variables and **parameters can also be finals** to prevent changing them within the method. I didn't know parameters can be finals.
+- a method can also be `final`, but the meaning of `final` here is substantially different (will be discussed here in the context of [inheritance](#inheritance).
+
 ## Arrays Revisited:
 -
 ## The `String` Class:
