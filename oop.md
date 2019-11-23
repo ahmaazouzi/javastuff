@@ -1,7 +1,53 @@
-# Object Oriented Java
+# Classes, an Intro:
+- It's all about classes in java.
 
-## Classes, an Intro:
-## More on Classes and Methods:
-## Inheritance:
-## Packages and Interfaces:
-## Generics:
+## Class Fundamentals:
+- Defining a new class is defining a new *data type*.
+- A class is a *template* for an object and an object is an *instance* of a class.
+- Defining a class is done through specifying its data and the code that operates on that data. A class can have both the data and code or just one of the two.
+- Data is called ***instance variables*** and the code is ***methods***. Methods and instance variables are called ***class members***.
+- A class doesn't have to have a `main()` method unless it's the entry point of a program.
+- The **dot operator** `.` links the name of an object with the name of an instance variable. The dot is actually a separator and not an operator but most people call it the dot operator, so ..
+
+## Declaring an Object and the Use of `new`:
+- Declaring an object is a two step process:
+	1. Declare a variable of the given class type.
+	2. assign a physical copy of the class the declared variable with the `new` operator.
+- The `new` operator allocates memory to the intended object and returns a reference to it. 
+- When you don't explicitly supply a reference, java offers an automatic one.
+- The reason why primitives need no `new` operator is the fact that they are implemented as normal variables and not as objects. Objects have rich capabilities which add an overhead. primitives are more efficient without this added overhead.
+- `new` allocates memory in **runtime** making java extremely dynamic. You don't always know in advance how many objects you need to create. 
+- A class is a logical construct while an object is a physical reality.
+
+## Assigning Object Reference Variables:
+- Discussion here is reminiscent of the passing by reference vs. passing by value from K&RC.
+```java
+Something obj1 = new Something();
+Something obj2 = obj1;
+```
+- In the example above, the variable obj2 holds a reference to the object pointed to by obj1. If you change obj2, obj1 changes too. If this were primitive, changing obj2 would have no effect on obj1. If you want a brand new object referenced by obj2, you need to create one with the `new` operator and all that jazz.
+- Apart from referencing the same object, obj1 and obj2 are not linked in any other way. obj2 can reference another object and its ability to change the referenced object ceases. The same is true for the variable obj1 with which the object was created. 
+
+## Methods, an Intro:
+- A ***parameter:*** is a variable defined in the method which receives a value when the method is called.
+- An ***argument:*** The value that gets passed into the the method (or its parameter).
+
+## Constructors:
+- A ***constructor*** allows you to initialize all of an instance variables when you create it, instead of spending a ridiculous time initializing these variables manually (directly or through methods). 
+- When you don't define your own constructor, java does it for you, but it initializes variables to zeros, nulls or falses... etc. 
+- A constructor initializes a class when it's created. It has has same name as the given class and its syntax is almost identical to that of a method except that it doesn't have a return type, not even a void.
+- A parametrized constructor is a more useful constructor.
+
+## `this`:
+- `this` is used inside methods to refer to the objects where these methods were defined. It's use can redundant if it's not directed to combat so-called variable hiding.
+-  **Variable hiding** happens when *local variables* (i.e. method variables or method parameters) overlap with instance variables. local variables hide instance variables meaning the names only refer to local variables and completely hide instance variables that have the same names.
+- Using `this` you can avoid these namespace clashes, thus unhiding instance variables and making them accessible in the method. This also allows you to give the same names to your instance variables and the method and constructor parameters that are used to manipulate them.
+- There is an Endian controversy concerning naming give the same names to parameters and instance variables or vice-versa. I think using the same names with `this` is more intuitive. 
+
+## The `finalize()` Method:
+- The `finalize()` method allows an object to release locks on resources such as files before this object is destroyed. You define a `finalize()` method inside your class and tell it what to do and whenever the garbage collector is about destroy an object it runs `finalize()`.
+
+# More on Classes and Methods:
+# Inheritance:
+# Packages and Interfaces:
+# Generics:
