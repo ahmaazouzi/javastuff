@@ -302,12 +302,32 @@ class Hamama extends Batata {
 - `super` can be used to prevent member hiding. If a subclass has a method or variable with the same name and parameter type and names as the superclass, the superclass member is hidden by that of the subclass. This use is almost identical that of `this`, except that super refers to the superclass rather than the class itself and it has this syntax `super.member`.
 
 ## Multilevel Hierarchies:
+- Inheritance can cascade infinitely resulting absurdly long hierarchies.
+- `super` only refers to the class's immediate super class.
+
 ## When Constructors are Executed:
+- In a hierarchy, constructors are executed in order of derivation, meaning that superclass constructors are executed before subclass constructors. This makes sense, because superclasses have no idea about their subclasses members while the reverse is true.
+
 ## Method Overriding:
+- When a subclass method has the same name and type signature as a method in the superclass, the subclass method ***overrides*** the superclass method. The overridden method always refer to the subclass method.
+- As mentioned before, if you desire to use the overridden method defined in the superclass, use it along with the keyword `super` as in `super.overridenMethod()`.
+- If the subclass method has the same name as a method in the superclass but a different type signature, the subclass method is simply overloaded not overridden. 
+
 ## Dynamic Method Dispatch:
+- Method overriding allows for ***dynamic method dispatching*** which is a how java implements runtime polymorphism. What is ***dynamic method dispatching***? Java can use a superclass variable to refer to a subclass object. In run time, java determines what version of an overridden method to execute. It is the subclass object method that gets called, not superclass one.
+
+### Why overriding?
+- It allows a general class to define methods that would be common to subclasses. Subclasses will define their own specialized implementations of these common classes. This realizes the "one interface, multiple methods" principle.
+- The one interface provides consistency, while method overriding provide flexibility, You don't always know in advance what subclasses will inherit from your superclass or the implementation details of such subclasses.
+
 ## Abstract Classes:
+-
+
 ## `final` with Inheritance:
+-
+
 ## The Object Class:
+-
 
 # Packages and Interfaces:
 # Generics:
