@@ -93,7 +93,7 @@ public class Something{
 }
 
 class Dada{
-	static fafa (){
+	static fafa {
 		System.out.println("zzzzz");
 	}
 }
@@ -101,22 +101,134 @@ class Dada{
 - 
 
 ## Final:
-- `final` fields are constants. a final should be initialized when it's declared or within a constructor.
+- `final` fields are constants. A final should be initialized when it's declared or within a constructor.
 - It is conventional for constants to be in all-caps.
 - Constants are a midpoint between variables and mere literals. Instead of spreading literals (magic values) that might need to be changed in the future and you might forget to change some of them, a constant give them a meaningful name. Changing them is done once with the constant. Finals are extremely useful.
 - local (method) variables and **parameters can also be finals** to prevent changing them within the method. I didn't know parameters can be finals.
 - a method can also be `final`, but the meaning of `final` here is substantially different (will be discussed here in the context of [inheritance](#inheritance).
 
 ## Arrays Revisited:
--
-## The `String` Class:
--
-## Command-Line Arguments:
--
-## Varargs:
--
+- Demystification time: Java implements arrays as objects, that's why declaring one does sometimes require the `new` keyword. 
+- The instance variable **length** is useful. it tells you the size of the array.
 
+## Nested and Inner Classes, an Intro:
+- Nested class is a class defined within another class.
+- An nested class is bound by it's parent class. The nested class can't exist without the outer class. 
+- The nested class has access to the outer class variables, including its private ones. The outer class has no access to the nested class private variables.
+- A nested class can also be defined and be part of a block.
+- As far as staticity goes:
+	1. ***Static nested classes*** must access the non-static members of the enclosing class only through an object. It has no direct access to them. This is kinda ridiculous.
+	2. ***Non-static nested classes (also called an INNER CLASS,)*** on the other hand, has access to all variables and methods of the outer class directly.
+- An instance of the inner class can only be created within the context of the outer class. It must be created within the outer class definition, because there is no way of directly manipulating it outside the outer class
+```java
+public class Something{
+	
+
+	public static void main(String[] args) {
+		Dada dada = new Dada();
+		// Zaza zaza = new dada.Zaza(); This is totally wrong
+	}
+}
+	
+
+
+class Dada{
+	void wawa() {
+		// This is the only way you can do يت
+		Zaza zaza = new Zaza();
+		zaza.nana();
+
+	}
+	
+	public class Zaza {
+		void nana() {
+			System.out.println("wawa");
+		}
+	}
+	
+}
+```
+- Inner classes are especially handy for handling events. There can also be **anonymous inner classes** which are classes without names.
+
+## The `String` Class:
+- Every string is an object of type **String**, including string literals. 
+- String objects are immutable. Once created, they cannot be changed. This is not a restriction because:
+	1. Every time you want to change a string, you create a new one. I think that when I change the value of a string variable, what happens is that a new string object is created and the variable points to the newly created object.
+	3. **StringBuilder** and **StringBuffer** are alternative classes that allow regular string manipulation to take place. 
+- The following are useful **String** properties and methods:
+	* **equals**: tests for equality between two strings.
+	* **chartAt**: gets character at a given index.
+	* **length:** gets the length of a string.
+
+## Varargs:
+- *vararg* methods are methods that accept a variable number of arguments.
+- *vararg methods* were added to JDK5. Before that, Java required the creation of overloaded methods that each accepted a different number of variables, but this worked if there is a small number of known variables. In case there was a large number of unknown variable, they were put into an array and the array were passed as an argument. Both ways are tedious and boring so stick to *vararg*.
+- *vararg* follows this syntax:
+```java
+void method(int ... v){
+	dasdasdsadsa
+}
+```
+- The three dots are the vararg and the following example gives an example of how they work:
+```java
+public class Something{
+	
+	static int tata(int ... v) {
+		return v.length;
+	}
+
+	public static void main(String[] args) {
+		System.out.println("tata got " + tata(1,3,5,6,7) + " arguments!");
+		System.out.println("tata got " + tata(1,3) + " arguments!");
+		System.out.println("tata got " + tata(1) + " arguments!");
+		System.out.println("tata got " + tata() + " arguments!");	
+	}
+}
+```
+- Basically, `int ... v` in the last example is just an array, some type of syntactic sugar.
+- A method can have other arguments besides the vararg but the vararg should be the last argument as in:
+```java
+void tata(int a, int b, int c, int ... v){
+	kasdjas;
+}
+```
+- Only one vararg can be passed to a method. More than results in an error.
+- A vararg method can be overloaded in two ways:
+	1. The type of the vararg argument type can be of different in the overloaded methods.
+	2. One or more non-vararg parameters can be added.
+	3. A vararg method can also be overloaded by a non-vararg method.
+
+### Vararg and Ambiguity:
+- Ambiguity can result from vararg method overloading as in the following example:
+```java
+class Calamata {
+	static void baba(int ... v){
+		System.out.println(v.length);
+	}
+	static void baba(boolean ... v){
+		System.out.println(v.length);
+	}
+
+	public static void main(String[] args) {
+		baba(1,2,3); // Ok
+		baba(false, true); // OK
+		baba(); // This statement results in a compile time error (ambiguous)
+	}
+}
+```
+- Ambiguity in this arises from the fact that the method can't tell what type the vararg is, is it boolean or int? Who knows?!! and java is all about types and stuff. 
+- Another situation where ambiguity arises is illustrated by the following example:
+```
+void batata(int ... v) { //Something; }
+void batata(int u, int ... v) { //Something; }
+
+batata(5); // This is ambiguous
+``` 
+- The compiler can't tell if this call refers to one element in the vararg in `(int ... v)` or to the first argument in (int u, int ... v) and an empty vararg .. Hemmm.. Curious!!!
+- It is just better to forgo overloading vararg methods.
 
 # Inheritance:
+
+
 # Packages and Interfaces:
 # Generics:
