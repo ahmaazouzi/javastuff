@@ -228,7 +228,86 @@ batata(5); // This is ambiguous
 - It is just better to forgo overloading vararg methods.
 
 # Inheritance:
+- A ***superclass*** is the class inherited from.
+- A ***subclass*** is the class which inherit the traits of a superclass. It gets all the traits defined in its superclass and adds its own.
+- Inheritance is done through the use of the keyword `extends`. 
+- Java doesn't support multiple inheritance.
+- Java supports a class hierarchy, meaning that a subclass can itself become a superclass.
+- No class can inherit itself.
 
+### Member Access and Inheritance:
+-  A sublcass can inherit everything from its superclass except for its **private** members.
+
+### A Superclass Variable Can Reference a Subclass Object:
+```java
+public class Calamata {
+	public static void main(String[] args) {
+		Batata batata = new Hamama();
+		batata.lala()
+		// batata.zaza(); This is wrong
+	}
+}
+
+class Batata{
+	void lala() {
+		System.out.println("dagdag");
+	}
+}
+
+class Hamama extends Batata {
+	void zaza() {
+		System.out.println("TaqTaq");
+
+	}
+}
+```
+- The above example is self-evident. The problem is that the created object can't access the additional members defined by the subclass, because how the hell would it know anything about them. The book claims it's useful, but I am still not convinced. I am aware, that A variable of type map can refer to objects of type HashMap and TreeMap is useful, but I need more clarification. I guess it might have to do with overriding.
+
+## Super:
+- A subclass doesn't inherit its superclass's constructors and private members, but there is a trick around this done by the keyword **super**.
+- The statment `super(arg-list)` allows the subclass to call a constructor defined by the superclass. The initializations that takes place in the superclass become accessible to the subclass as in:
+```java
+public class Calamata {
+	public static void main(String[] args) {
+		Hamama hamama = new Hamama("Delicious", 99);
+		hamama.lala();
+	}
+}
+
+class Batata{
+	private String taste;
+	private int color;
+
+	Batata(String taste, int color) {
+		this.taste = taste;
+		this.color = color;
+	}
+
+	void lala() {
+		System.out.println("The taste is " + taste + " and the color is " + color);
+	}
+}
+
+class Hamama extends Batata {
+	// Constructor using super to initialize members
+	public Hamama(String t, int c) {
+		super(t, c);
+	}
+
+}
+```
+- `super` doesn't make the superclass private members visible to the subclass, however, they are somehow accessible indirectly through the constructor. Even when they are private, they can be used by the subclass through `super`.
+- Because constructors can also be overloaded, it's obvious that super will match the constructor that has the same number and/or type of arguments.
+- `super` must be the first statement executed inside the subclass constructor.
+- `super` can be used to prevent member hiding. If a subclass has a method or variable with the same name and parameter type and names as the superclass, the superclass member is hidden by that of the subclass. This use is almost identical that of `this`, except that super refers to the superclass rather than the class itself and it has this syntax `super.member`.
+
+## Multilevel Hierarchies:
+## When Constructors are Executed:
+## Method Overriding:
+## Dynamic Method Dispatch:
+## Abstract Classes:
+## `final` with Inheritance:
+## The Object Class:
 
 # Packages and Interfaces:
 # Generics:
