@@ -372,7 +372,14 @@ abstract type name(parameter-list);
 - When you define a class in a package, you also need to execute it along with the package. If class Dawa is in pkg1, then the right command line to run it is `java pkg1.Dawa` rather than `java Dawa`.
 
 ## Access Protection:
--
+- Packages do also control member visibility. 
+- Generally speaking this is how access control works in a nutshell:
+	* Anything declared **public** can be accessed by the whole world.
+	* Anything declared **private** can only be accessed by other members of the same class.
+	* A class with no modifier (default) is accessible by other classes in the same package and by subclasses.
+	* If a class is declared **protected**, it is accessible outside the package to only its subclasses (in addition to being accessible within the package).
+- The following table gives a detailed description of java's access control rules.
+
 | | Private | No Modifier | Protected | Public |
 | --- | --- | --- | --- | --- |
 | Same class | Yes | Yes | Yes | Yes
@@ -381,17 +388,127 @@ abstract type name(parameter-list);
 | Different package subclass | No | No| Yes | Yes  
 | Different package non-subclass | No | No| No | Yes   
 
+- This table only applies only to class members. A non-nested class has only to choices, default and public. A public class is accessed by the whole world, while a default one is accessible package-wide.
+
 ## Importing Packages:
--
+- Java core classes are placed in named packages.
+- The **import** statements save a substantial amount of time and typing. Instead of qualifying every important method or class with the full package dot separated name, it's enough to do so once per file with the **import** statement.
+- Imports can be done in the following two ways:
+```java
+import java.util.Date;
+import java.io.*;
+``` 
+- The symbol `*` refer to all classes under the given package.
+- All standard classes are stored in the **java** package. An important package is stored in this package called **java.lang**. This package has so much useful functionality that java automatically imports it implicitly to every program. 
+- When two classes with the same name but from two different packages are imported with the star `*` form, you will get an compile error asking you to explicitly specify the class packages.
+- **Imports** are just a convenience. You can always fully qualify classes with their full package name, but that would be extremely tedious.
 
 ## Interfaces:
--
+- With an **interface**, you specify what a class must do but not how it does it.
+- Interfaces are similar to classes but:
+	* They generally declare empty methods that don't have bodies.
+	* A class that implements the interface must implement all the methods declared in the interface. 
+	* They don't have instance variables (obviously).
+	* Variables defined inside an interface are implicitly **static** and **final**. These variables must be initialized and they can't be changed by the implementing classes.
+	* All methods and variables in an interface are implicitly **public**.
+	* An interface can be implemented by any number of classes.
+- This paragraph is complicated. For a method to be called from one class to another, both classes must be present at compile time. This problem is not present when it comes to interfaces (I have no idea what this means, I am just writing it here coz I feel like I might be missing something important).
+
+### Defining an interface:** 
+- An interface definition is done as follows:
+```java
+ interface Daza {
+	void wawa();
+	int baba(int tata, String lala);
+}
+```
+- Starting at JDK8, an interface now can actually define an implementation; the so called **default implementation** of interface methods. Interfaces are still used in their traditional form. More on default implementation can be found [here](#using-static-methods-in-an-interface).
+
+### Implementing interfaces
+- Implementing an interfaces has the following general characteristics:
+	* If a class implements more than one interface they are separated by commas as in `Zaza implements Daza, Waawa, Dada { ...  }`.
+	* Type signature of the concrete method must match its abstract interface counterpart.
+	* Methods that implement the interface must be declared **public**.
+	* If a class implements two interfaces which declare the same method, the same method will be used the class for either interface (I know, bad English). The following snippet causes no compile or run time error:
+```java
+interface Zaza {
+	void lala();
+}
+
+interface Mama {
+	void lala();
+}
+
+public class Calamata implements Zaza, Mama {
+	
+	public static void main(String[] args) {
+		Calamata calamata = new Calamata();
+		calamata.lala();
+	}
+
+	@Override
+	public void lala() {
+		System.out.println("Calamata");
+		
+	}	
+}
+```
+
+### Accessing implementations through Interface References:
+- Similar to how it's done with superclass references.
+- Even though the object is an instance of the implementing class, because it's of type interface, it only has knowledge of the interface reference members. It has no knowledge of the concrete class members that are not defined by the interface.
+
+### partial implementation:
+- If a class doesn't implement all the methods of an interface, it must be declared **abstract**.
+- Any class that inherit from this abstract class (which doesn't implement interface methods) must either implement all the interface methods or be declared **abstract**.
+
+### Nested Interfaces:
+- A **member interface** or **nested interface** is an interface defined inside a class or another interface. It can be private , protected or public, unlike a top-level interface which can only be public or default. Outside the enclosing scope, the nested interface must be qualified by dot and the enclosing class.
+- I have no idea what the use of a nested interface is.
+
+### Interfaces Can be Extended:
+- Interfaces can inherit other interfaces through the use of the **extend** keyword just as classes inherit other classes.
+- A class implementing an interface that inherits from other interfaces must provide the implementations of all the methods required by the interface inheritance chain.
 
 ## Default Interfaces Methods:
--
+- **Default methods** or **extension methods** are implementations inside interfaces.
+- The reason for adding default methods is to expand interfaces without breaking existing code, especially in popular interfaces that are used everywhere.
+- Another motive for default methods is the ability to have optional methods that might not be needed in all classes implementing the interface. No there is no need to implement unneeded methods with empty placeholder methods.
+- Default methods don't allow interfaces to maintain state. It must still be implemented by a class that can hold that state.
+- Default methods are an answer to a specific problem. They are not the norms and the purpose of interfaces is still to define the what but not the how.
+- The following example illustrates the use and syntax of default methods:
+```java
+interface Dada{
+	void sasa();
+	default void baba(){ // Use of default 
+		System.out.println("BATATA");
+	}
+}
+
+public class Zaza implements Dada {
+	@Override
+	public void sasa() {
+		System.out.println("What??!!");
+		
+	}
+	
+	public static void main(String[] args) {
+		Zaza zaza = new Zaza();
+		zaza.baba();
+	}
+}
+```
+
+### Default Methods and Multiple Inheritance:
+- Interfaces with default methods do effectively offer some very similar if not identical to multiple inheritance of behavior. This might cause some problems, though. If class C implements interfaces I1 and I2, what if both classes supply a method with the same name and type signature? What if one of the classes extends the other one? What if the class furnishes its own method? The rules to untangle these hairy complications are as follows:
+	* If a class offers its own method, it simply override the interface methods.
+	* If both interfaces have the same default method, an error occurs.
+	* If the one interface inherits the other and both have the same default method, the class uses the inheriting interface.
+	* You can explicitly refer to a specific interface default method using the keyword **super** with the following statement:
+		*InterfaceName*.super.*methodName()*
 
 ## Using Static Methods in an Interface:
--
+- JDK8 added the ability to defined static methods in interfaces. These can be called independently of an object. No implementation of the interface is required to use these. 
 
 ## Thoughts:
 -
