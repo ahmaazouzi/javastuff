@@ -321,13 +321,79 @@ class Hamama extends Batata {
 - The one interface provides consistency, while method overriding provide flexibility, You don't always know in advance what subclasses will inherit from your superclass or the implementation details of such subclasses.
 
 ## Abstract Classes:
--
+- **Motivation:** A superclass can impose some form of consistency while subclasses take care of implementation details. When you create the generalized superclass you might not know how to implement the details of certain methods. You can create a placeholder method that does something meaningless, but would you do so when you have the exciting ***abstract methods.***
+- **Abstract methods** are unimplemented method shells defined in a superclass. In addition to being convenient placeholders that help with consistency, they a probably more important feature. The classes that inherit them **MUST** override them. Abstract methods have the following general syntax:
+```
+abstract type name(parameter-list);
+```
+- A class with one or more abstract methods must be declared **abstract**. An abstract class cannot be instantiated or have constructors or abstract static methods. A subclass of an abstract class must either implement all abstract methods or be an abstract class itself. An abstract class can also have concrete method implementations besides the abstract methods.
+- Abstract classes can also be used to create object references
 
 ## `final` with Inheritance:
--
+- In addition to naming constants, **final** can also be used for two purposes:
+	1. **Preventing Overriding:** Methods preceded by **final** cannot be overridden. The compiler does inlining(whatever that means) resulting in early-binding (???) which is better performance-wise.
+	2. **Preventing Inheritance:** When a class is declared **final**, it cannot be inherited. As a result, all its methods are final, making them more performant. However, you cannot have an final abstract class as it is an absurd construct. An abstract must be inherited while a final class cannot.
 
 ## The Object Class:
--
+- The **Object** class is the master class. Every other object in java is a subclass of the **Object** class. 
+- A reference variable of type **Object** can refer to an object of any type. Every object has the following methods
+| Method | Function
+| --- | --- |
+| `Object clone()` | Creates an identical copy. 
+| `boolean equals(Object o)` | Tests for equality.
+| `void finalize()` | Called before an unused objectt is recycled.
+| `Class<?> getClass()` | Gets the class of an object at run time.
+| `int hashCode()` | Returns the hash code of the object.
+| `String toString()` | Returns a String describing the object 
+
+ - In addition to these methods, the Object object class has the following methods which have to do with multithreading : `notify()`, `notifyAll()` and the different flavors of `wait()`. These are useful methods, yes they ARE!
 
 # Packages and Interfaces:
+- Packages are used to compartmentalize class name space. Interfaces allow you totally abstract a class and make possible a special type of multi-inheritance. While a class cannot inherit more than a single class or abstract class, it can on the other hand implement multiple interfaces. 
+
+## Packages:
+- It is easy to run out of descriptive class names if you use a single name space. **Packages** allow you to **divide name space into manageable sections**. They also allow you to control visibility.
+- You can define classes and class members that are visible only to other classes within the same package and invisible to the rest of the world. 
+
+### Defining a Package:
+- A package is created by including the package command on top of a file. Every class defined in this file belongs to the specified package.
+- The classes in a file that doesn't define a package are placed in the **default package** which has no name. A default package is sufficient for simple programs, but a serious application does need a packages. 
+- Java uses the files system directories to store packages. If Batata is under package **packajo**, then the **.class** file it compiles to is placed in a directory named packajo.
+- Multiple files can include the same package. This means that the classes defined in these files are in the same specified package. In real world programs packages are spread among many packages.
+- You cna have a hierarchy of packages as which has the following format:
+		package *pkg1*[*.pkg2*[*.pkg3*]];
+- A package hierarchy must be reflected in the file system. A package declared as `package lala.batata.matata;` is stored in a file with the path `lala/batata/matata`.
+- Choose packages carefully, because you cannot rename a package without renaming the directory where the classes are placed.
+
+### Finding Packages and CLASSPATH:
+- How does java know where packages are? By default, Java starts looking for a package in the current working directory. Second, a directory path can be set though the **CLASSPATH**. Third, a **-classpath** option can be used with **java** and **javac** commands.
+- **-classpath** and **CLASSPATH** should be set to the directory containing the package. If the package is in `/Users/user1/pkg1` then the class path should be `/Users/user1/Java` ???!!
+- When you define a class in a package, you also need to execute it along with the package. If class Dawa is in pkg1, then the right command line to run it is `java pkg1.Dawa` rather than `java Dawa`.
+
+## Access Protection:
+-
+| | Private | No Modifier | Protected | Public |
+| --- | --- | --- | --- | --- |
+| Same class | Yes | Yes | Yes | Yes
+| Same package subclass | No | Yes| Yes | Yes  
+| Same package non-subclass | No | Yes| Yes | Yes  
+| Different package subclass | No | No| Yes | Yes  
+| Different package non-subclass | No | No| No | Yes   
+
+## Importing Packages:
+-
+
+## Interfaces:
+-
+
+## Default Interfaces Methods:
+-
+
+## Using Static Methods in an Interface:
+-
+
+## Thoughts:
+-
+
+
 # Generics:
