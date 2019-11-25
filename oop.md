@@ -336,7 +336,8 @@ abstract type name(parameter-list);
 
 ## The Object Class:
 - The **Object** class is the master class. Every other object in java is a subclass of the **Object** class. 
-- A reference variable of type **Object** can refer to an object of any type. Every object has the following methods
+- A reference variable of type **Object** can refer to an object of any type. Every object has the following methods:
+
 | Method | Function
 | --- | --- |
 | `Object clone()` | Creates an identical copy. 
