@@ -47,6 +47,8 @@ Something obj2 = obj1;
 ## The `finalize()` Method:
 - The `finalize()` method allows an object to release locks on resources such as files before this object is destroyed. You define a `finalize()` method inside your class and tell it what to do and whenever the garbage collector is about destroy an object it runs `finalize()`.
 
+									=================
+
 # More on Classes and Methods:
 ## Method Overloading:
 - **Method overloading** refers the fact that two methods with the same name and different parameter declarations can be defined in the same class. It's an aspect of polymorphism, namely, multiple names are reduced to one.
@@ -227,6 +229,8 @@ batata(5); // This is ambiguous
 - The compiler can't tell if this call refers to one element in the vararg in `(int ... v)` or to the first argument in (int u, int ... v) and an empty vararg .. Hemmm.. Curious!!!
 - It is just better to forgo overloading vararg methods.
 
+									=================
+
 # Inheritance:
 - A ***superclass*** is the class inherited from.
 - A ***subclass*** is the class which inherit the traits of a superclass. It gets all the traits defined in its superclass and adds its own.
@@ -348,6 +352,8 @@ abstract type name(parameter-list);
 | `String toString()` | Returns a String describing the object 
 
  - In addition to these methods, the Object object class has the following methods which have to do with multithreading : `notify()`, `notifyAll()` and the different flavors of `wait()`. These are useful methods, yes they ARE!
+
+									=================
 
 # Packages and Interfaces:
 - Packages are used to compartmentalize class name space. Interfaces allow you totally abstract a class and make possible a special type of multi-inheritance. While a class cannot inherit more than a single class or abstract class, it can on the other hand implement multiple interfaces. 
@@ -508,10 +514,58 @@ public class Zaza implements Dada {
 		*InterfaceName*.super.*methodName()*
 
 ## Using Static Methods in an Interface:
-- JDK8 added the ability to defined static methods in interfaces. These can be called independently of an object. No implementation of the interface is required to use these. 
+- JDK8 added the ability to define static methods in interfaces. These can be called independently of an object. No implementation of the interface is required to use these. AN interface static method is called by giving the interface name following by a period and the method name as in:
+	*InterfaceName.staticMethodName*
+- Static interface methods are not inherited by the implementing classes or other interfaces.
 
-## Thoughts:
--
-
+									=================
 
 # Generics:
+## Introductio ad Laudatorum:
+- Generics, introduced in JDK5, have profoundly changed Java. They added a new clever syntactic element and they also changed how Java's core classes and methods were implemented. Understanding how generics work will make you a java superhero. 
+- A generic allows the creation of a class, a method or a generic that works in a type safe way with several different data types. You define an algorithm once, independently of the data types it will work on, and then apply that algorithms to data of different types without added hassle. 
+- Generics expressive power is undeniable and that can be seen in how they fundamentally changed Java's *Collections Framework.* Generics provided Collections with complete type safety.
+
+## What are generics?
+
+```java
+class Wawa<T>{
+	T ob;
+	
+	Wawa(T o) {
+		ob = o;
+	}
+	
+	void showType(){
+		System.out.println(ob.getClass().getName());
+	}
+}
+
+public class Zaza{
+	public static void main(String[] args) {
+		Wawa<String> wawa = new Wawa<String>("Ahmed");
+		wawa.showType();
+	}
+}
+```
+## A simple Generics Exampe:
+## A Generic Class with Two Type Parameters:
+## The General Form of a Generic Class:
+## Bounded Types:
+## Using Wild Card Arguments:
+## Creating a Generic Method:
+## Generic Interfaces:
+## Raw Types and Legacy Code:
+## Generic Class Hierarchies:
+## Type Inference with Generics:
+## Erasure:
+## Ambiguity Errors:
+## Some Generics Restrictions:
+
+
+
+
+
+
+
+
