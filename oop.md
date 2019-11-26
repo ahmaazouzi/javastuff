@@ -136,7 +136,7 @@ public class Something{
 
 class Dada{
 	void wawa() {
-		// This is the only way you can do يت
+		// This is the only way you can do it
 		Zaza zaza = new Zaza();
 		zaza.nana();
 
@@ -574,22 +574,9 @@ public class Zaza{
 	* The actual generic will be created in the constructor. The constructor takes has parameter **o** of type **T**. Inside the constructor **ob** takes the value of **o**.
 	* Type parameter **T** can also be used to specify a return type as is shown in the `getOb()` method.
 	* The statement `Wawa<String> wawa` turn all references to **T** into type **String**.
-- The compiler doesn't create different versions of the Generic **Wawa**. Instead It removes generic type information (in a process called [*erasure*](#erasure)) and does necessary castings resulting in the specific needed type.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	* instantiation in `wawa = new Wawa<String>("Ahmed");` must also include the type in angle brackets.
+- The compiler doesn't create different versions of the Generic **Wawa**. Instead It removes generic type information (in a process called [*erasure*](#erasure)) and does necessary the casts, resulting in the specific needed type and just one generic.
+- Generics only take reference types, hence [autoboxing](meta.d/#autoboxing).
 
 
 
