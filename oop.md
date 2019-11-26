@@ -1,3 +1,71 @@
+- [Classes, an Intro:](#classes--an-intro-)
+  * [Class Fundamentals:](#class-fundamentals-)
+  * [Declaring an Object and the Use of `new`:](#declaring-an-object-and-the-use-of--new--)
+  * [Assigning Object Reference Variables:](#assigning-object-reference-variables-)
+  * [Methods, an Intro:](#methods--an-intro-)
+  * [Constructors:](#constructors-)
+  * [`this`:](#-this--)
+  * [The `finalize()` Method:](#the--finalize----method-)
+- [More on Classes and Methods:](#more-on-classes-and-methods-)
+  * [Method Overloading:](#method-overloading-)
+    + [Overloading Constructors:](#overloading-constructors-)
+  * [Objects as Parameters:](#objects-as-parameters-)
+  * [Argument Passing, an in-Depth Look:](#argument-passing--an-in-depth-look-)
+  * [Access Control:](#access-control-)
+  * [Static:](#static-)
+  * [Final:](#final-)
+  * [Arrays Revisited:](#arrays-revisited-)
+  * [Nested and Inner Classes, an Intro:](#nested-and-inner-classes--an-intro-)
+  * [The `String` Class:](#the--string--class-)
+  * [Varargs:](#varargs-)
+    + [Vararg and Ambiguity:](#vararg-and-ambiguity-)
+- [Inheritance:](#inheritance-)
+    + [Member Access and Inheritance:](#member-access-and-inheritance-)
+    + [A Superclass Variable Can Reference a Subclass Object:](#a-superclass-variable-can-reference-a-subclass-object-)
+  * [Super:](#super-)
+  * [Multilevel Hierarchies:](#multilevel-hierarchies-)
+  * [When Constructors are Executed:](#when-constructors-are-executed-)
+  * [Method Overriding:](#method-overriding-)
+  * [Dynamic Method Dispatch:](#dynamic-method-dispatch-)
+    + [Why overriding?](#why-overriding-)
+  * [Abstract Classes:](#abstract-classes-)
+  * [`final` with Inheritance:](#-final--with-inheritance-)
+  * [The Object Class:](#the-object-class-)
+- [Packages and Interfaces:](#packages-and-interfaces-)
+  * [Packages:](#packages-)
+    + [Defining a Package:](#defining-a-package-)
+    + [Finding Packages and CLASSPATH:](#finding-packages-and-classpath-)
+  * [Access Protection:](#access-protection-)
+  * [Importing Packages:](#importing-packages-)
+  * [Interfaces:](#interfaces-)
+    + [Defining an interface:**](#defining-an-interface---)
+    + [Implementing interfaces](#implementing-interfaces)
+    + [Accessing implementations through Interface References:](#accessing-implementations-through-interface-references-)
+    + [partial implementation:](#partial-implementation-)
+    + [Nested Interfaces:](#nested-interfaces-)
+    + [Interfaces Can be Extended:](#interfaces-can-be-extended-)
+  * [Default Interfaces Methods:](#default-interfaces-methods-)
+    + [Default Methods and Multiple Inheritance:](#default-methods-and-multiple-inheritance-)
+  * [Using Static Methods in an Interface:](#using-static-methods-in-an-interface-)
+- [Generics:](#generics-)
+  * [Introductio ad Laudatorum:](#introductio-ad-laudatorum-)
+  * [What are generics?](#what-are-generics-)
+  * [A simple Generics Example:](#a-simple-generics-example-)
+  * [A Generic Class with Two Type Parameters:](#a-generic-class-with-two-type-parameters-)
+  * [The General Form of a Generic Class:](#the-general-form-of-a-generic-class-)
+  * [Bounded Types:](#bounded-types-)
+  * [Using Wild Card Arguments:](#using-wild-card-arguments-)
+  * [Creating a Generic Method:](#creating-a-generic-method-)
+  * [Generic Interfaces:](#generic-interfaces-)
+  * [Raw Types and Legacy Code:](#raw-types-and-legacy-code-)
+  * [Generic Class Hierarchies:](#generic-class-hierarchies-)
+  * [Type Inference with Generics:](#type-inference-with-generics-)
+  * [Erasure:](#erasure-)
+  * [Ambiguity Errors:](#ambiguity-errors-)
+  * [Some Generics Restrictions:](#some-generics-restrictions-)
+  
+
+
 # Classes, an Intro:
 - It's all about classes in java.
 
@@ -576,7 +644,11 @@ public class Zaza{
 	* The statement `Wawa<String> wawa` turn all references to **T** into type **String**.
 	* instantiation in `wawa = new Wawa<String>("Ahmed");` must also include the type in angle brackets.
 - The compiler doesn't create different versions of the Generic **Wawa**. Instead It removes generic type information (in a process called [*erasure*](#erasure)) and does necessary the casts, resulting in the specific needed type and just one generic.
-- Generics only take reference types, hence [autoboxing](meta.md#autoboxing).
+- Generics only take reference types, hence [autoboxing](meta.md#enumeration-autoboxing-and-annotations) takes place turning a parameter like 99, a primitive **int** into the reference type **Integer** so you don't have to do any casting as in:
+```java
+Wawa<Integer> wawa4 = new Wawa<Integer>(99);
+```
+
 
 
 
