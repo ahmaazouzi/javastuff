@@ -75,7 +75,7 @@ Something obj2 = obj1;
 - an access modifier is added to a class member's declaration. The three access modifiers are:
 	1. **private:** can only be accessed within the class by other class members.
 	2. **public:** can be accessed by any the whole world. `main()`, for example, is open to be accessed outside the program, i.e. the java runtime system.
-	3. **protected:** has to do with inheritance which is discussed later [here](#inheritance).
+	3. **protected:** has to do with inheritance which is discussed later [here](#access-protection).
 	4. No modifier: when no modifier is specified, the default is for access to be public within the package where the class resides.
 - Data should be private while some methods are public and others private.
 
