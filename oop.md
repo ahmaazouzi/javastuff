@@ -576,7 +576,7 @@ public class Zaza{
 	* The statement `Wawa<String> wawa` turn all references to **T** into type **String**.
 	* instantiation in `wawa = new Wawa<String>("Ahmed");` must also include the type in angle brackets.
 - The compiler doesn't create different versions of the Generic **Wawa**. Instead It removes generic type information (in a process called [*erasure*](#erasure)) and does necessary the casts, resulting in the specific needed type and just one generic.
-- Generics only take reference types, hence [autoboxing](meta.d/#autoboxing).
+- Generics only take reference types, hence [autoboxing](meta.md#autoboxing).
 
 
 
