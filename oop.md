@@ -1,71 +1,3 @@
-- [Classes, an Intro:](#classes--an-intro-)
-  * [Class Fundamentals:](#class-fundamentals-)
-  * [Declaring an Object and the Use of `new`:](#declaring-an-object-and-the-use-of--new--)
-  * [Assigning Object Reference Variables:](#assigning-object-reference-variables-)
-  * [Methods, an Intro:](#methods--an-intro-)
-  * [Constructors:](#constructors-)
-  * [`this`:](#-this--)
-  * [The `finalize()` Method:](#the--finalize----method-)
-- [More on Classes and Methods:](#more-on-classes-and-methods-)
-  * [Method Overloading:](#method-overloading-)
-    + [Overloading Constructors:](#overloading-constructors-)
-  * [Objects as Parameters:](#objects-as-parameters-)
-  * [Argument Passing, an in-Depth Look:](#argument-passing--an-in-depth-look-)
-  * [Access Control:](#access-control-)
-  * [Static:](#static-)
-  * [Final:](#final-)
-  * [Arrays Revisited:](#arrays-revisited-)
-  * [Nested and Inner Classes, an Intro:](#nested-and-inner-classes--an-intro-)
-  * [The `String` Class:](#the--string--class-)
-  * [Varargs:](#varargs-)
-    + [Vararg and Ambiguity:](#vararg-and-ambiguity-)
-- [Inheritance:](#inheritance-)
-    + [Member Access and Inheritance:](#member-access-and-inheritance-)
-    + [A Superclass Variable Can Reference a Subclass Object:](#a-superclass-variable-can-reference-a-subclass-object-)
-  * [Super:](#super-)
-  * [Multilevel Hierarchies:](#multilevel-hierarchies-)
-  * [When Constructors are Executed:](#when-constructors-are-executed-)
-  * [Method Overriding:](#method-overriding-)
-  * [Dynamic Method Dispatch:](#dynamic-method-dispatch-)
-    + [Why overriding?](#why-overriding-)
-  * [Abstract Classes:](#abstract-classes-)
-  * [`final` with Inheritance:](#-final--with-inheritance-)
-  * [The Object Class:](#the-object-class-)
-- [Packages and Interfaces:](#packages-and-interfaces-)
-  * [Packages:](#packages-)
-    + [Defining a Package:](#defining-a-package-)
-    + [Finding Packages and CLASSPATH:](#finding-packages-and-classpath-)
-  * [Access Protection:](#access-protection-)
-  * [Importing Packages:](#importing-packages-)
-  * [Interfaces:](#interfaces-)
-    + [Defining an interface:](#defining-an-interface---)
-    + [Implementing interfaces](#implementing-interfaces)
-    + [Accessing implementations through Interface References:](#accessing-implementations-through-interface-references-)
-    + [partial implementation:](#partial-implementation-)
-    + [Nested Interfaces:](#nested-interfaces-)
-    + [Interfaces Can be Extended:](#interfaces-can-be-extended-)
-  * [Default Interfaces Methods:](#default-interfaces-methods-)
-    + [Default Methods and Multiple Inheritance:](#default-methods-and-multiple-inheritance-)
-  * [Using Static Methods in an Interface:](#using-static-methods-in-an-interface-)
-- [Generics:](#generics-)
-  * [Introductio ad Laudatorum:](#introductio-ad-laudatorum-)
-  * [What are generics?](#what-are-generics-)
-  * [A simple Generics Example:](#a-simple-generics-example-)
-  * [A Generic Class with Two Type Parameters:](#a-generic-class-with-two-type-parameters-)
-  * [The General Form of a Generic Class:](#the-general-form-of-a-generic-class-)
-  * [Bounded Types:](#bounded-types-)
-  * [Using Wild Card Arguments:](#using-wild-card-arguments-)
-  * [Creating a Generic Method:](#creating-a-generic-method-)
-  * [Generic Interfaces:](#generic-interfaces-)
-  * [Raw Types and Legacy Code:](#raw-types-and-legacy-code-)
-  * [Generic Class Hierarchies:](#generic-class-hierarchies-)
-  * [Type Inference with Generics:](#type-inference-with-generics-)
-  * [Erasure:](#erasure-)
-  * [Ambiguity Errors:](#ambiguity-errors-)
-  * [Some Generics Restrictions:](#some-generics-restrictions-)
-
-
-
 # Classes, an Intro:
 - It's all about classes in java.
 
@@ -649,12 +581,100 @@ public class Zaza{
 Wawa<Integer> wawa4 = new Wawa<Integer>(99);
 ```
 
+### Generics Work Only with Reference Types:
+- You cannot pass a primitive argument to the type parameter of a generic so the following statement is illegal
+```java
+Wawa<int> wawa4 = new Wawa<int>(99); // This is incorrect
+```
+- This is not a serious problem as java gives you the options of type [wrapping and autoboxing](meta.md#enumeration-autoboxing-and-annotations).
 
+### Generic Types Differ Based on Their Type Arguments:
+- Even though **wawa2** and **wawa3** are of type **Wawa<T>**, they are references to different types because their parameter types differ. 
 
+### How Generics Improve Type Safety:
+- If it can all be done with **Object**, what's the point of using generics? They take care of type safety and eliminate the need to do casts and type-checking by hand, but how do they improve type safety?
+-  The use of **Object** is fraught with perils and tediousness. You have to cast and recast all over the place, and are more often than not, you're greeted with run time errors. The frequent casts introduce errors and type mismatches. It is easy to cast an object of type **Object** which contains a string to an integer. This compiles but gives you a run time headache. 
+- Generic simply converts these thorny run time errors into compile time errors which are easier to catch and correct.
 
-## A Generic Class with Two Type Parameters:
 ## The General Form of a Generic Class:
+- If you have more than one type parameters you can simply separate them with commas within the angle brackets. The type arguments which will be passed into the parameter types can be different or the same. The following examples illustrates this:
+```java
+class Za<Z, T, A> {
+	Z z;
+	T t;
+	A a;
+	
+	Za(Z za, T ta, A aa){
+		z = za;
+		t = ta;
+		a = aa;
+	}
+	
+	void da() {
+		System.out.println(z.getClass().getName());
+		System.out.println(t.getClass().getName());
+		System.out.println(a.getClass().getName());
+	}
+}
+
+public class Zaza {
+	public static void main(String[] args) {
+		Za<String, String, Integer> za = new Za<String, String, Integer>("44", "s", 6);
+		za.da();
+		
+	}
+}
+```
+
 ## Bounded Types:
+- You have the ability to replace type parameters by any class type, but you might sometimes find it useful to limit the types that can replaces these parameters. The reason why you would make such restrictions include the fact that you might need to call certain methods that are available only to certain types of data. You also don't want errors related to actions like trying to multiply a string by a zero. As an example, trying to add a zero to **z** results in a compile error:
+```java
+class Za<Z> {
+	Z z;
+
+	Za(Z za){
+		z = za;
+	}
+	
+	void da() {
+		System.out.println(z.intValue() + 0); // error: + is not defined for object z
+	}
+}
+
+public class Zaza {
+	public static void main(String[] args) {
+		Za<Integer> za = new Za<Integer>(55);
+		za.da();		
+	}
+}
+```
+- To remedy these situations, you will need **bounded types**. These declare an upper limit superclass from which all type arguments are derived. No the special types will derive from the specified superclass rather than the **object** class. The type parameter can only be replaced by the specified superclass or a subclass of it. The bound is an **inclusive upper bound**. It's done with the **extends** keyword as in the following example which fixes the previous example with a bounded type:
+```java
+class Za<Z extends Number> {
+	Z z;
+
+	Za(Z za){
+		z = za;
+	}
+	
+	void da() {
+		System.out.println(z.intValue() + 0); // error: + is not defined for object z
+	}
+}
+
+public class Zaza {
+	public static void main(String[] args) {
+		Za<Integer> za = new Za<Integer>(55);
+		za.da();		
+	}
+}
+```
+- The upper bound makes certain properties and methods available which are not part of the **Object** class. It also prevents the creation of undesired classes (for example strings when numeric data are needed).
+- Interfaces can also be used as upper bounds. There can be multiple interfaces as upperbounds. You can also have both a class and interfaces as upper bounds but the class should be the first in order followed by the interface or interfaces. These must be separated by **&** operator. The syntax is as follows:
+```java
+class Wawa<T extends myClass & someInterface & anotherInterface> { // ...
+```
+
 ## Using Wild Card Arguments:
 ## Creating a Generic Method:
 ## Generic Interfaces:
