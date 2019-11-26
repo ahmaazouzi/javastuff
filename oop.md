@@ -38,7 +38,7 @@
   * [Access Protection:](#access-protection-)
   * [Importing Packages:](#importing-packages-)
   * [Interfaces:](#interfaces-)
-    + [Defining an interface:**](#defining-an-interface---)
+    + [Defining an interface:](#defining-an-interface---)
     + [Implementing interfaces](#implementing-interfaces)
     + [Accessing implementations through Interface References:](#accessing-implementations-through-interface-references-)
     + [partial implementation:](#partial-implementation-)
@@ -63,7 +63,7 @@
   * [Erasure:](#erasure-)
   * [Ambiguity Errors:](#ambiguity-errors-)
   * [Some Generics Restrictions:](#some-generics-restrictions-)
-  
+
 
 
 # Classes, an Intro:
