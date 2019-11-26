@@ -527,11 +527,24 @@ public class Zaza implements Dada {
 - Generics expressive power is undeniable and that can be seen in how they fundamentally changed Java's *Collections Framework.* Generics provided Collections with complete type safety.
 
 ## What are generics?
+- Generics are ***parameterized types***. The importance of parameterized types stems from the fact that they allow you to create classes, methods and interfaces where type is supplied as a parameter.
+- Before generics, Java used references of type **Object** which offered the ability to create generalized classes, methods and interfaces that work with different data types. The only problem, a serious problem, was that it lacked type safety. 
+- Generics on the other hands offer type safety and they make it easier to create generalized classes, methods and interfaces. There is no need to cast **Object** to the specialized types being worked on. Generics do all that for you.
 
+
+
+
+
+
+
+## A simple Generics Example:
+- The following example gives the syntax of a very basic generic class:
 ```java
-class Wawa<T>{
+import java.util.ArrayList;
+
+class Wawa<T>{ // T is a type parameter (will be replaced by real type.
 	T ob;
-	
+	// An object of type t is passed to the constructor
 	Wawa(T o) {
 		ob = o;
 	}
@@ -543,12 +556,43 @@ class Wawa<T>{
 
 public class Zaza{
 	public static void main(String[] args) {
-		Wawa<String> wawa = new Wawa<String>("Ahmed");
+		Wawa<String> wawa;
+		wawa = new Wawa<String>("Ahmed");
 		wawa.showType();
+		
+		Wawa<Thread> wawa2 = new Wawa<Thread>(Thread.currentThread());
+		wawa2.showType();
+		
+		Wawa<ArrayList<String>> wawa3 = new Wawa<ArrayList<String>>(new ArrayList<String>());
+		wawa3.showType();
 	}
 }
 ```
-## A simple Generics Exampe:
+- A few things jump at one when examining this example
+	* In `class Wawa<T>` **T** is the name of a **type parameter**. It is a place holder for the actual type which will be passed to the class when it's created. Type parameters are enclosed in angle brackets **`<>`**. Angle brackets immediately indicate you're dealing with generics.
+	* The type parameter **T** is used to create an object **ob** *of type T*. The object **ob** will be of the type passed to **T**. If the type passed to **T** is an **Integer**, then **ob** will be of type **Integer**.
+	* The actual generic will be created in the constructor. The constructor takes has parameter **o** of type **T**. Inside the constructor **ob** takes the value of **o**.
+	* Type parameter **T** can also be used to specify a return type as is shown in the `getOb()` method.
+	* The statement `Wawa<String> wawa` turn all references to **T** into type **String**.
+- The compiler doesn't create different versions of the Generic **Wawa**. Instead It removes generic type information (in a process called [*erasure*](#erasure)) and does necessary castings resulting in the specific needed type.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## A Generic Class with Two Type Parameters:
 ## The General Form of a Generic Class:
 ## Bounded Types:
