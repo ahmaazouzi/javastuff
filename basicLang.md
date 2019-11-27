@@ -367,10 +367,9 @@ public class Something{
 	}
 }
  ```
-- `for ( ; ; )` creates a forever loop.
+- `for ( ; ; ) ... ` creates a forever loop.
 
 ### Enhanced For Loops:
-- The **enhanced for loop** or **foreach** is amazing. It has a clean syntax and helps avoid boundary issues. It is used to iterate over collections such as arrays and lists.. etc. It follows this syntax:
 ```java
 char[] someConsonants = {'b', 'c', 'd', 'v', 'z'};
 for (char c: someConsonants){

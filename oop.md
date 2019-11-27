@@ -100,7 +100,6 @@ class Dada{
 	}
 }
 ```
-- 
 
 ## Final:
 - `final` fields are constants. A final should be initialized when it's declared or within a constructor.
@@ -297,7 +296,6 @@ class Hamama extends Batata {
 	public Hamama(String t, int c) {
 		super(t, c);
 	}
-
 }
 ```
 - `super` doesn't make the superclass private members visible to the subclass, however, they are somehow accessible indirectly through the constructor. Even when they are private, they can be used by the subclass through `super`.
@@ -531,12 +529,6 @@ public class Zaza implements Dada {
 - Before generics, Java used references of type **Object** which offered the ability to create generalized classes, methods and interfaces that work with different data types. The only problem, a serious problem, was that it lacked type safety. 
 - Generics on the other hands offer type safety and they make it easier to create generalized classes, methods and interfaces. There is no need to cast **Object** to the specialized types being worked on. Generics do all that for you.
 
-
-
-
-
-
-
 ## A simple Generics Example:
 - The following example gives the syntax of a very basic generic class:
 ```java
@@ -676,19 +668,190 @@ class Wawa<T extends myClass & someInterface & anotherInterface> { // ...
 ```
 
 ## Using Wild Card Arguments:
+- Basically, if you try to invoke an object of a certain generic from within another object of the same generic, both must have the same type parameter. A an object *genericInteger* of type **SomeGeneric<Integer>** is not compatible with object *genericDouble* of type **SomeGeneric<Double>**, even though both are of type **SomeGeneric<T>**. The following example might illustrate this problem:
+```java
+class Za<Z extends Number> {
+	Z z;
+
+	Za(Z za){
+		z = za;
+	}
+	
+	boolean equalsAnotherZa(Za<Z> za){
+		return z.equals(za.z);
+
+	}
+}
+
+public class Zaza {
+	public static void main(String[] args) {
+		Za<Integer> za = new Za<Integer>(55);
+		Za<Double> zdZa = new Za<Double>(3.4);
+		za.equalsAnotherZa(zdZa);	// Compile error: incompatible types		
+	}
+}
+```
+- Within Object Za, **Z** will become whatever type you give it. The argument to emthod `equalsAnotherZa(Za<Z> za)` is **Z**. It is converted to an **Integer** as everything else in the object. I fyou try to invoke it using a **Double** you get a type mismatch error.
+- To remedy this, use a wild card argument **<?>** as a type parameter as in :
+```java
+class Za<Z extends Number>{
+	...
+	boolean equalsAnotherZa(Za<?> za){
+			return z.equals(za.z);
+	...
+}
+```
+- The wild card **<?>** represents an unknown type. It doesn't affect what type can be passed. It is the **extends** of the bounded type that does that.
+
+### Bounded Wildcards:
+- **Bounded wildcards** are largely similar to [bounded types](#bounded-types).
+- The example provided is unnecessarily overcomplicated but in principle the same bounded types rules apply here.
+- They are used to allow you restrict by generic methods to just certain data types. 
+- One advantage they have is the ability to specify and upper and a lower bound which are done through the following syntax:
+	+ **Upper bound `<? extends superclass>` :** An inclusive bound on only the classes to inherit from.
+	+ **Lower bound `<? super subclass>`:** An inclusive bound on only the classes that are superclasses of the given class.
+
 ## Creating a Generic Method:
+- A method inside a generic can make use of the generic type parameter.
+- What's even more interesting is that a generic method that uses one or more type parameters can be created. Even more fantastic is that you can have a generic method as part of a non-generic method.
+
+```java
+import java.util.ArrayList;
+
+public class Zaza {
+	static <T> void dada(T[] a, ArrayList<T> c) {
+	    for (T o : a) {
+	        c.add(o); // Correct
+	    }
+	}
+	
+	public static void main(String[] args) {
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		Integer[] array = {1,2,4,5};
+		dada(array, list);
+		list.forEach((Integer a) -> System.out.println(a));
+	}
+}
+```
+- As the example shows, the type parameter precedes the method's type return. Within the method itself, it's business as usual. 
+- A little difference between generic classes and generic methods is that you methods don't need type arguments. Types are discerned automatically.
+
+### Generic Constructors:
+- It's possible for a constructor to be a generic, even though the class it builds is not a generic. 
+- What is the point??? 
+
 ## Generic Interfaces:
+- Generic Interfaces are similar to generic classes with a few differences.
+- When a class implements a generic interface that has bounded types, the implementing class must specify those bounds. There is also no need to repreat the bound again as in:
+```java
+interface ZazaInterface<T extends Number> { ... }; // Interface with a bound
+ // The class specifies the bound but the interface .. doesn't repeats it.
+class ZazaClass<T extends Number> implements ZazaInterface<T> { ... };
+// The following is wrong 
+class ZazaClass<T extends Number> implements ZazaInterface<T extends Number> { ... };  // <- WRONG!!
+```
+- A class implementing a generic interface must also be generic, unless the generic type paramter is a specific type like `interface ZazaInterface<Integer>`.
+- A generic interface allows to use different data types and also to put restrictions on what kinda data types to use. 
+
 ## Raw Types and Legacy Code:
+- For the purpose of backward compatibility between generics and pre-generics code, Java allows the use of generics without type parameters resulting in ***raw types***. These are compatible with legacy code but type safety is lost.
+
+```java
+class Wawa<T>{ 
+	T ob;
+	
+	Wawa(T o) {
+		ob = o;
+	}
+	
+	void showType(){
+		System.out.println(ob);
+	}
+}
+
+public class Zaza{
+	public static void main(String[] args) {
+		Wawa rawawa = new Wawa(new Double(3.3)); // This creates a raw type
+		System.out.println(rawawa.ob);
+	}
+}
+```
+- Raw types simply replace type parameters with objects of type **Object**.
+
 ## Generic Class Hierarchies:
+- Generics can inherit and be inherited from just like other classes. The main difference is that any type parameters passed to a superclass must also be passed to its subclasses.
+
+### Generic Superclasses:
+- Extending a generic class can be done with the following:
+```java
+class Subclass<T> extends Superclass<T> {
+	Subclass(T o){
+		super(o);
+	}
+}
+```
+- The rules are largely consistent. A class extending a superclass must be generic even if it doesn't need to be.
+- A subclass can also define its type parameters.
+- A subclass can also add it's own type parameter as in:
+```java
+class Subclass<T, V> extends Superclass<T> {
+	V ob;
+	Subclass(T o, V o2){
+		super(o);
+		ob = o2;
+	}
+}
+```
+
+### Generic Subclasses
+- It is Ok for a generic to be the sublcass of a non-generic as in:
+```java
+class Superclass {
+	int num;
+
+	Superclass(int i){
+		num = i;
+	}
+}
+
+class Subclass<T> extends Superclass {
+	T ob;
+	Subclass(T o, int i){
+		super(i);
+		ob = o;
+	}
+}
+```
+
+### Casting:
+- You can cast generics if they are compatible and their arguments are the same.
+
+### Overriding Methods in a Generic Class:
+- Generic methods can be overridden just like simple class methods, duh!!
+
 ## Type Inference with Generics:
+- Java people thought the following syntax is too verbose (really?!!!):
+```java
+Za<String, String, Integer> za = new Za<String, String, Integer>("44", "s", 6);
+```
+- The type parameters are give twice. Starting with JDK7, java makers gave the option of forgoing typing them for a second time to the right of the new operator and replace that with empty angle brackets (the so-called diamond operator) as in:
+```java
+Za<String, String, Integer> za = new Za<>("44", "s", 6);
+```
+- This type inference can also be done when passing the an generic object as an argument to a method (at least a method belonging to that generic).
+
 ## Erasure:
+- **Erasure** is meta. It has to do with the inner working of the compiler. This refers to the fact that when a java program is compiled type information are erased and replaced by appropriate types. Type parameters can be considered as just a sort of syntactic sugar.
+- More voodoo I really don't care about right now. 
+
 ## Ambiguity Errors:
+- Generics introduce cases of ambiguity errors. Method overloading is especially susceptible to such errors. Overloading a generic class's method with more than one type paramter as arguments causes this.
+
 ## Some Generics Restrictions:
-
-
-
-
-
-
-
+- Things you can't do with generics include:
+	+ **Type parameters can't be instantiated.** Something like `T on = new T();` doesn't make sense.
+	+ **Type Parameters can't be used by static members of the enclosing generic class.** However, you can define static generic methods which can have their own type parameters.
+	+ **An array whose element type is a type parameter CANNOT be instantiated.** This is illegal `T vals[] = new T[]`, where **T** is a type parameter.
+	+ **You cannot create an array of type-specific generic references:** `Wawa<Integer> wawas[] = new Wawa<Integer>[10]` is also illegal. `Wawa<?> wawas[] = new Wawa<?>[10]` is legal, however.
+	+ **Generics cannot extend `Throwable`,** meaning that generic exception classes cannot be created.
 
