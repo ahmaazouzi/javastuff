@@ -11,7 +11,8 @@
 - [Lambda Expressions and Exceptions](#lambda-expressions-and-exceptions)
 - [Lambda Expressions and Variable Capture](#lambda-expressions-and-variable-capture)
 - [Method References](#method-references)
-- [Constructor References](#constructor-references)
+	+ [Method References to Static Methods](#method-references-to-static-methods)
+	+ [Method References to Instance Methods](#method-references-to-instance-methods)References](#constructor-references)
 - [Predefined Functional References](#predefined-functional-references)
 
 ## Introducing Lambda Expressions:
@@ -45,6 +46,10 @@ interface Lala {
 	+ Variable initialization.
 	+ Return statements.
 	+ Method arguments.
+	+ Casts
+	+ The **`<?>`** operator.
+	+ Array Initializers.
+	+ Lambda expressions themselves.
 - 
 ```java
 interface Baba{
@@ -111,21 +116,133 @@ public class Zaza{
 ```
 
 ## Passing Lambda Expressions as Arguments:
--
+- Another context that provides a target type is when a lambda is passed as an argument. This might be the best use case of lambdas. Javascript has been doing it for decades.
+- This feature allows java to pass executable code to a method making java and extremely expressive language, 
+
+```java
+interface Baba{
+	void sasa(int num1, int num2);
+}
+
+public class Zaza{
+	public static void main(String[] args) {
+		Baba adda = (a, b) -> System.out.println(a + b);
+		Baba multa = (a, b) -> System.out.println(a * b);
+		Baba subta = (a, b) -> System.out.println(a - b);
+		
+		int num1 = 100;
+		int num2 = 50;
+		
+		// Pass previously defined lambdas as arguments
+		arithmeticos(adda, num1, num2); 
+		arithmeticos(multa, num1, num2);
+		arithmeticos(subta, num1, num2);
+
+		//pass a block lambda definition as an argument, but this is bad style
+		arithmeticos((a, b) -> {
+			int a2 = a * 2;
+			int b2 = b * 2;
+			System.out.println(a2 * b2);}, 
+			num1, num2);	
+	}
+	
+	static void arithmeticos(Baba op, int num1, int num2){
+		op.sasa(num1, num2);
+	}
+}
+```
 
 ## Lambda Expressions and Exceptions:
--
+-  Lambdas can throw exceptions, but if they do throw checked exceptions, these must be compatible with exceptions thrown by the abstract method defined in the functional interface.
 
 ## Lambda Expressions and Variable Capture:
--
+- A lambda has access to both static and **instance variables** of the class that invokes it.
+- **Variable capture:** When a lambda uses a local variable from the enclosing scope (variables defined in the body of an enclosing method), only ***effectively final*** local variables may be used??!!!! 
+- A lambda cannot modify a local variable of the enclosing scope.
+- Somehow, **a** in the following example is effectively final, but IF you change it at any point in the method's body, it stop being effectively final and cannot be used at all by the lambda (uncomment `// a = 0` to see it). Otherwise, it can be accessed and read but not modified by the lambda:
+```java
+interface Baba{
+	void sasa(int num1);
+}
+
+public class Zaza{
+	public static void main(String[] args) {
+		int a = 9;
+		Baba baba;
+		baba = (n) -> n = a * 3;
+		baba.sasa(a);
+//		a = 9; // If you uncomment this line, a stops being effectively final.
+	}
+}
+```
+- To sum up:
+	+ A lambda has total access to the instance and static variables of the enclosing class.
+	+ An effectively final local variable that does not change within the body of the enclosing method body.
+	+ A lambda can use the effectively final local variables of the enclosing method body, but cannot modify them.
 
 ## Method References:
--
+- A ***method reference*** is somehow related to lambdas. It is used to refer to a method without executing it (think of lambdas as arguments). It also requires a target type (functional interface). There are different types of method references that include:
 
-## Constructor References:
--
+### Method References to Static Methods:
+- Not sure of the point of method references, but the syntax is generally simple. A double column separator **`::`** is used to link a functional interface to some random method that's compatible with the abstract method defined in the functional interface. The following example illustrates this:
+```java
+interface Baba{
+	void sasa(int num);
+}
+
+class Something {
+	static void printDouble(int num) {
+		System.out.println(num * 2);
+	}
+}
+
+public class Zaza{
+	
+	static void meaninglessMethod(Baba baba,int num) {
+		baba.sasa(num);
+	}
+	public static void main(String[] args) {
+		meaninglessMethod(Something::printDouble, 44);
+	}
+}
+```
+
+### Method References to Instance Methods:
+```java
+interface Baba{
+	void sasa(int num);
+}
+
+class Something {
+	void printDouble(int num) {
+		System.out.println(num * 2);
+	}
+}
+
+public class Zaza{
+	
+	static void meaninglessMethod(Baba baba,int num) {
+		baba.sasa(num);
+	}
+	public static void main(String[] args) {
+		Something something = new Something();
+		meaninglessMethod(something::printDouble, 44);
+	}
+} 
+```
 
 ## Predefined Functional References:
--
+- JDK 8 and after defines several functional interfaces for you in the **java.util.function** package. The following example illustrates the use of one of these predefined functional interfaces, `UnaryOperator`:
+```java
+import java.util.function.UnaryOperator;
 
+public class Zaza{
+	
+	public static void main(String[] args) {
+		UnaryOperator<Integer> zaza = (a) -> 2 * a;
+		System.out.println(zaza.apply(4000));
+	}
+}
+```
+- These interfaces include: **`UnaryOperator<T>`, `BinaryOperator<T>`, `Consumer<T>`, `Supplier<T>`, `Function<T,R>`, `Predicate<T>`**.
 
