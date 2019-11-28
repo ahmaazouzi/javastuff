@@ -12,7 +12,7 @@
 - [Lambda Expressions and Variable Capture](#lambda-expressions-and-variable-capture)
 - [Method References](#method-references)
 	+ [Method References to Static Methods](#method-references-to-static-methods)
-	+ [Method References to Instance Methods](#method-references-to-instance-methods)References](#constructor-references)
+	+ [Method References to Instance Methods](#method-references-to-instance-methods)
 - [Predefined Functional References](#predefined-functional-references)
 
 ## Introducing Lambda Expressions:
