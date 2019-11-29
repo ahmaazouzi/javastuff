@@ -88,9 +88,174 @@ public class Zaza{
 							========================================
 
 # Enumerations
-- Added in JDK5, Java's enumerations are richer than their counterparts in other languages. 
+- Added in JDK5, Java's enumerations are richer than their counterparts in other languages. In Java, they can have constructors, methods and instance variables.. etc. 
 
-# Autoboxing
+## Enumeration Fundamentals:
+- An enumeration is crated with the keyword **enum**:
+```java
+enum Days {
+	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+}
+```
+- The names **Monday**, **Tuesday**, .. etc. are the **enumeration constants**. They are implicitly and must be static, final and public. Their type is the name of their enum which is **Days** here.
+- A variable of an enum type can be defined. Even  though, enumerations are classes, you cannot instantiate them with the keyword **new**.
+```java
+Days day = Days.Monday
+```
+- The only values a variable of the enum type are the enumeration constants of that enum as the examble above shows.
+- Two enumeration constants can be compared for equality with the equality operator as in `if (day == Days.Tuesday) { ...`.
+- A switch statement can be controlled through the use of an enum constant value. Case statements must be constants of that same enum. They don't need to be qualified with the enum name:
+```java
+enum Days {
+		Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+	}
+
+public class Zaza{
+	public static void main(String[] args) {
+		Days days = Days.valueOf("Monday");
+		
+		switch (days) {
+		case Tuesday:
+			System.out.println("Potato");
+			break;
+		case Wednesday:
+			System.out.println("Batata");
+			break;
+		case Thursday:
+			System.out.println("Pompitaire");
+			break;
+		default:
+			System.out.println("Kartochka");
+			break;
+		}
+	}
+}
+```
+
+## `values()` and `vlaueOf()`:
+- `values()` returns an array of the enum type. The array contains all the enum constants.
+- `valueOf(str)` returns the enum constant whose  name matches the string argument.
+
+## Java Enumerations are Class Types:
+- They cannot be instantiated with the **new** operator, but enums are actual classes. They can have constructors, instance methods and variables and even implement interfaces.
+- Each enum constant has its own copy of any instant of any instance variables of the enumeration. 
+- The following code illustrates 3 actions that can be performed on an enum:
+	+ **A constructor:** The same constructor is applied to the enum constants.
+	+ **An instance method.** 
+	+ **An instance variable.**
+```java
+enum Days {
+	Monday('w'), Tuesday('w'), Wednesday('w'), Thursday('w'), Friday('w'), Saturday('h'), Sunday('h');
+		
+	private char workStatus;
+
+	private Days(char work) {
+		workStatus = work;
+	}
+		
+	public char getWorkStatus() {
+		return workStatus;
+	}
+}
+
+public class Zaza{
+	
+	public static void main(String[] args) {
+		Days day = Days.valueOf("Monday");
+		System.out.println(day.getWorkStatus());
+	}
+}
+```
+- You can call the instance method in two ways:
+```java
+Days.Monday.getWorkStatus();
+Days.valueOf("Monday").getWorkStatus();
+```
+- An enumeration can have multiple overloaded constructors and a default constructor that doesn't take arguments as in `Days(){ ... }`.
+- **Restrictions** on enums:
+	+ An enumeration cannot inherit another class;
+	+ An enum cannot be a superclass.
+
+## Enumerations Inherit Enum:
+- Although enumerations can't be extended, they all inherit from the class **java.lang.Enum**. **Enum** defines three fundamental methods:
+	1. **`ordinal()`:** gives the position of the enum constant  in the enum list.
+	2. **`compareTo()`:** compares the ordinal ordinal positions of two enum constants and returns 0 if the same, -1 if lower position.. etc. 
+	3.  **`equals()`:** compares two constants for equality.
+
+							========================================
+
+# Type Wrappers and Autoboxing:   
+## Type Wrappers:
+- These are used to encapsulate primitive data types in objects that inherit **Object**. They are as follows:
+	+ **`Character(char ch)`:** puts a primitive inside an object. To get the primitive you can use `CharValue()` which gives you a **char** type.
+	+ **`Boolean(boolean b)`:** wraps and `booleanValue()` unwraps.
+	+ **Numeric Types:** follow the same exact patter, so `Byte(byte b)`, `Double(double d)` wrap while doubleValue() and `byteValue()` unwrap.
+- Numeric wrappers can construct a number from a primitive value or from a string.
+- Wrapping is called **boxing** and unwrapping **unboxing**.
+- Java seems to have deprecared boxing or certain constructors used for boxing since JDK9.
+
+## Autoboxing:
+- Since JDK5, boxing and unboxing are done automatically for you whenever such actions are needed, as the following example shows:
+```java
+Integer a = 44;
+int b = a;
+```
+- Auto-(un)boxing occurs also in methods. A primitive argument passed to an object type parameter is automatically converted to an object. The same happens in a return statement. If the vlaue is **Integer**, but the method specifies an **int** as its return type, **Integer** is unboxed into an **int**.
+- It also takes place in expressions as this shows:
+```java
+public class Zaza{
+	public static void main(String[] args) {
+		Integer a = 4, b = 9;
+		int z = a + b; // a and b are automatically unboxed.
+		System.out.println(z);
+	}
+}
+```
+- Auto-(un)boxing helps prevent errors.
+- Primitives are still very important. Wrappers are much less efficient, and unboxing and boxing add much more unnecessary overhead.
+
+							========================================
+
 # Annotations:
+- An annotation doesn't change the semantics of a program. It's is used by some tools during development and deployment. 
+
+## Annotation Basics:
+- The following snippet defines a simple annotation:
+```java
+@interface Annotato {
+	String lala();
+	Int baba();
+}
+```
+- Things to note:
+	+ Annotations are based on the **interface**. 
+	+ **@** signals an annotation. When coupled with @interface, it signals the declaration of an annotation.
+	+ Annotations have only method declarations. These methods act like fields.
+	+ All annotations extend the **Annotation** interface, but annotations can't extend anything.
+	+ Once declared, a annotation is used to annotate whatever including other annotations. 
+- Annotating something is done as follows:
+```java
+@Annootato(lala = "lala", baba="777")
+public class Zaza{ ... }
+```
+
+## Specifying a Retention Policy:
+- **Annotation Retention Policies** specifies when an annotation is to be discarded. They are three:
+	+ **Source**: Only available in source code and is discarded during compilation.
+	+ **Class**: Available in **.class** file but doesn't make it to the JVM.
+	+ **RUNTIME**: stays during run time. It has the highest persistence.
+- Retention policy is specified for an annotation by the **@Retention** annotation. If no retention policy is given, it defaults to **CLASS**.
+
+## Obtaining Annotations at Run Time Using Reflection:
+- Annotations are primarily intended for use by development and deployment tools, but if their retention policy is given as **RUNTIME**, they can be found by a java program during run time through the use of reflection.
+- **Reflection** allows the obtaining of information about a class in run time. To get a class's annotation, first get its **Class** with the `getClass()` method. After you get **Class** you can get its information such as its methods, fields and annotations.
+
+
+
+
+							========================================
+
 # I/O and Other Stuff:
+
+
 ## Using instanceof:
