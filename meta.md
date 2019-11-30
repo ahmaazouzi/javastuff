@@ -376,7 +376,7 @@ BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 ```
 - The following snippet shows how to use the console to print strings or lines of text:
 ```java
-public class Zaza{
+public class Zaza {
     public static void main(String[] args) throws IOException{
         String line;
         BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
@@ -387,12 +387,58 @@ public class Zaza{
 }
 ```
 
-## Writing Console Output:
 ## The PrintWriter Class:
+- **PrintWriter** is the preferred character-based method of writing to the console as opposed to the other byte-based methods. It make internationalization a breeze. 
+- A commonly used constructor of the **PrintWriter** class is:
+```
+PrintWriter(OutputStream ops, boolean flushingOn)
+```
+- An example of the usage of PrintWriter:
+```java
+PrintWriter pw = new PrintWriter(System.out, true);
+```
+
 ## Reading and Writing Files:
+- Files can also be read either through byte or character streams. 
+- Opening a file be done simply by creating an object of type **FileInputStream** or **FileOutputStream** and specifying the name of the file as an argument to their constructors as in:
+```java
+FileInputStream = new FileInputStream(String filename) throws FileNotFoundException;
+FileOutputStream =  new FileOutputStream(String filename FileNotFoundException);
+```
+- After using a file, it must be closed. Failing to do so results in so-called memory leaks, because closing a file releases system resources allocated to the file, allowing them to be used by another file. This is done with the `close()` method available in both **FileInputStream** and **FileOutputStream**. You call the close method explicitly. A new way of closing file, added in JDK7, is the [**try with resources**](#automatically-closing-a-file) statement, with which Java closes the file automatically when it's no longer needed.
+- The following snippet reads a text file:
+```java
+import java.io.*;
+
+public class Zaza{
+	public static void main(String[] args) throws IOException{
+		int i;
+		FileReader fi = new FileReader("/Users/someuser/somefile.txt");
+
+		do {
+			i = fi.read();
+			if (i != -1) 
+				System.out.print((char) i);
+		} while (i !=  -1);
+		
+		fi.close();
+	}
+}
+```
+- It's advisable to surround every IO statement with a try-catch statement and enclose the **close** statement in a **finally** block.
+- To copy a file, you can simply write **i** variable into a **FileWriter** or a **FileOutputStream**.
+
 ## Automatically Closing a File:
-
-
+-JDK7 added the so-called *automatic resource management.* It's based on an extended try statement. It closes a file automatically when it's not needed anymore.
+- The basic syntax is as follows:
+```java
+try(FileReader fi = new FileReader("/Users/someuser/somefile.txt")){
+	......
+} catch {
+	....
+}
+```
+- You can have more than one resources separated with semi-columns.
 
 	                     	ooooooooooooooooooooooooooooooooooooooooo
 
