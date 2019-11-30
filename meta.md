@@ -11,17 +11,17 @@
 - **finally** is used to force the execution of code occurring after a try block even if an exception takes place.
 - Handling exceptions follows this general form:
 ```java
-		try {
+try {
 			
-		} catch (Exception e) {
-			// TODO: handle exception
-		} catch (Exception e) {
-			// TODO: handle exception
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
-			// TODO:dsdsdsds
-		}
+	} catch (Exception e) {
+		// TODO: handle exception
+	} catch (Exception e) {
+		// TODO: handle exception
+	} catch (Exception e) {
+		// TODO: handle exception
+	} finally {
+		// TODO:dsdsdsds
+}
 ```
 
 ## Exception Types:
@@ -182,7 +182,7 @@ Days.valueOf("Monday").getWorkStatus();
 	2. **`compareTo()`:** compares the ordinal ordinal positions of two enum constants and returns 0 if the same, -1 if lower position.. etc. 
 	3.  **`equals()`:** compares two constants for equality.
 
-							========================================
+						++++++++++++++++++++++++++++++++++++++++
 
 # Type Wrappers and Autoboxing:   
 ## Type Wrappers:
@@ -214,7 +214,7 @@ public class Zaza{
 - Auto-(un)boxing helps prevent errors.
 - Primitives are still very important. Wrappers are much less efficient, and unboxing and boxing add much more unnecessary overhead.
 
-							========================================
+						++++++++++++++++++++++++++++++++++++++++
 
 # Annotations:
 - An annotation doesn't change the semantics of a program. It's is used by some tools during development and deployment. 
@@ -249,11 +249,96 @@ public class Zaza{ ... }
 ## Obtaining Annotations at Run Time Using Reflection:
 - Annotations are primarily intended for use by development and deployment tools, but if their retention policy is given as **RUNTIME**, they can be found by a java program during run time through the use of reflection.
 - **Reflection** allows the obtaining of information about a class in run time. To get a class's annotation, first get its **Class** with the `getClass()` method. After you get **Class** you can get its information such as its methods, fields and annotations.
+- The following program shoes how to capture information about a notation:
+```java 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.*;
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface Annotato {
+	String lala();
+	int baba();
+}
 
+class Matata{
+	@Annotato(lala = "sasa", baba = 55)
+	public void fafa() {
+		System.out.println("Something");
+	}
+}
 
+public class Zaza{
+	public static void main(String[] args) {
+		Matata matata  = new Matata();
+		
+		try {
+			Class<?> c = matata.getClass();
+			Method method = c.getMethod("fafa");
+			Annotato anno = method.getAnnotation(Annotato.class);
+			System.out.println(anno.baba());
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
+```
+- `getMethods()` is somehow similar to the `getMethod(str)` method, but it gets a list of the annotations associated with a given class or method.
 
-							========================================
+## The AnnotatedElement Interface:
+- The **AnnotatedElement** interface located **java.long.reflect** defines the methods seen in the previous sections such as `getAnnotation()` and `getAnnotations()`. The purpose of this interface is to do reflection on annotations. It is implemented by classes **Method**, **Class**, **Constructor**, **Field**, **Package**. This interface has several other useful methods for handling annotations.
+
+## Default Values:
+- Annotation members can be given default values to be used if the member isn't given value. This is how default values are declared:
+
+```java
+@interface Annotato{
+	String sasa() default "sasa";
+	int baba() default 0;
+}
+```
+- When using the annotation, you can leave the argument out, specify all of them or specify only some of them, so all the following statements are correct:
+```java
+@Annotato()
+@Annotato(sasa = "wawa")
+@Annotato(baba = 55)
+@Annotato(sasa = "wawa", baba = 55)
+```
+
+## Marker Annotations:
+- They are a special type of annotation. They have no members and they are solely used to mark things. Their mere presence is sufficient to signal something.
+- When used, an annotation can be used without parentheses. They are actually required only when members need to be supplied.
+
+## Single Member Annotations:
+- If you have a single member value, you must name that member **value** and you don't need the word value when using that annotation as in:
+```java
+@interface Annotato{
+	value() default ss;
+}
+// .... The following is how to use single member annotation.
+@Annotato(777)
+class Something {...}
+```
+
+## Built-In Annotations:
+- Java has many built-in annotations, most of which are specialized, but 9 are general purpose. Four of these annotations are defined in the the **java.lang.annotation** package:
+	+ **@Retention:** Specifies [retention policies](#specifying-a-retention-policy) and can only be used to annotate other annotations.
+	+ **@Documented:** A marker annotation used to tell a tool that an annotation needs to be documented.
+	+ **@Target:** It specifies the types of items to which an annotation can be applied. It takes one argument which is an array of constants of the enumeration **ElementType**. Example: `@Target({ElementType.METHOD, ElementType.TYPE})`.
+	+ **@Inherited:** Can only be used on other annotations. It causes annotations on a superclass to be inherited by its subclasses.
+- The five annotations defined in **java.lang** are:
+	+ **@Override:** A marker annotations used only on methods to signal that a method must be overridden and not just overloaded.
+	+ **@Deprecated:** A marker annotation used to signal that a construct is obsolete and replaced by a new one.
+	+ **@FuncionalInterface:** A marker annotation to signal that an interface is indeed is a functional one. 
+	+ **@SafeVarargs:** A marker indicating that there are no unsafe actions related to varargs occur. It is used to suppress warnings related to varargs??!!!!
+	+ **@SuppressWarnings:** For ignoring warnings.
+
+## Conclusion:
+- The rest of the chapter seems a bit esoteric and too detached from what I think is useful at the moment. Might come back to this topic in the future.
 
 # I/O and Other Stuff:
 
