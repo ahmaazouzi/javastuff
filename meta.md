@@ -214,7 +214,7 @@ public class Zaza{
 - Auto-(un)boxing helps prevent errors.
 - Primitives are still very important. Wrappers are much less efficient, and unboxing and boxing add much more unnecessary overhead.
 
-						++++++++++++++++++++++++++++++++++++++++
+						ooooooooooooooooooooooooooooooooooooooooo
 
 # Annotations:
 - An annotation doesn't change the semantics of a program. It's is used by some tools during development and deployment. 
@@ -340,7 +340,60 @@ class Something {...}
 ## Conclusion:
 - The rest of the chapter seems a bit esoteric and too detached from what I think is useful at the moment. Might come back to this topic in the future.
 
-# I/O and Other Stuff:
+	                      	ooooooooooooooooooooooooooooooooooooooooo
+
+# I/O:
+- Java I/O is not part of the language itself but is defined in its core API.
+- Text-based console I/O is not important in Java (HS claims that!)
+- However, Java provides excellent facilities concerning file and network I/O. 
+
+## Streams:
+- A stream is an IO abstraction. It either produces or consumes data. A stream is linked to a physical device. Streams act the same, regardless of how different the phsyical deviced they are linked to. These might be keyboards, networks, device files.. etc. The stream presents a unified abstraction for all these. Streams are defined in the **java.io** package.
+
+## Byte Streams and Character Streams:
+- Java provides two types of streams, **byte** and **character** streams. The former handles binary data, while the latter handle character I/O. Character streams are in unicode. They are convenient for characters and can even be more efficient than bytes in some cases. At the lowest level, all I/O is byte-based.
+
+### The Byte Stream Classes:
+- Byte streams are defined by two class hierarchies. At the top,we have **InputStream** and **OutputStream**. All byte streams have the words **InputStream** or **OutputStream** in them, which differentiates them from character streams.
+- They define the methods **read** and **write**.
+
+### The Character Stream Classes:
+- Character streams are also defined by two hierarchies at the top of which stand the abstract classes **Reader** and **Writer** and they are designed to handle unicode characters. The classes derived from these also have several methods chief among which are **read** and **write**.
+
+### The Predefined Streams:
+- **java.lang** is always imported automatically to any program. One of the classes defined in in this package is **System** which has the 3 stream variables **in**, **out** and **err**. These are byte-based streams even they are used to IO characters. The following section discusses the use of **System.in**.
+
+## Reading Console Input:
+- This section does a great job demystifying the voodooish nature of java I/O.
+- The dual nature of java I/O, bytes of characters is to blame.
+- Console input goes through this steps:
+	+ Console input is done with **System.in** (a byte-based input stream). It looks like this is the only way it's done.
+	+ To get a character-based input stream attached to the console, **System.in** is wrapped in a **BufferedReader**. One of the commonly use constructors of **BufferedIReader** is `BufferedReader(Reader inputReader)`. Its parameter is of type **Reader**, a character-based stream, how do you fix this?
+	+ One of **Reader**'s subclasses is **InputStreamReader** which converts bytes to characters through the following constructor `InputStreamReader(InputStream inputStream)`. The byte-based stream **System.in** is just that.
+	+ The following snippet sums up the whole process:
+```java
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+```
+- The following snippet shows how to use the console to print strings or lines of text:
+```java
+public class Zaza{
+    public static void main(String[] args) throws IOException{
+        String line;
+        BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
+        do {
+            System.out.println(line = bReader.readLine());
+        } while (true);
+    }
+}
+```
+
+## Writing Console Output:
+## The PrintWriter Class:
+## Reading and Writing Files:
+## Automatically Closing a File:
 
 
-## Using instanceof:
+
+	                     	ooooooooooooooooooooooooooooooooooooooooo
+
+#Other:
